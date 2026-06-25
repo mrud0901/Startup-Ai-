@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reports - Sundaram Finance Dealer Growth Copilot</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Three.js for Background Shader -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#a6c8ff",
+                    "inverse-surface": "#2d3133",
+                    "secondary-fixed-dim": "#ffb693",
+                    "on-tertiary-container": "#cebbff",
+                    "outline-variant": "#c2c6d3",
+                    "on-primary-container": "#a5c7ff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-high": "#e6e8ea",
+                    "tertiary-container": "#5a4396",
+                    "tertiary-fixed-dim": "#cfbcff",
+                    "on-secondary-fixed": "#341000",
+                    "on-primary-fixed-variant": "#004787",
+                    "primary-fixed": "#d5e3ff",
+                    "surface-container": "#eceef0",
+                    "on-tertiary-fixed": "#22005d",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed": "#001c3b",
+                    "surface-variant": "#e0e3e5",
+                    "on-error": "#ffffff",
+                    "primary-container": "#00529b",
+                    "surface": "#f7f9fb",
+                    "secondary-fixed": "#ffdbcb",
+                    "secondary": "#a04100",
+                    "surface-container-low": "#f2f4f6",
+                    "on-surface": "#191c1e",
+                    "inverse-on-surface": "#eff1f3",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "outline": "#727782",
+                    "surface-container-highest": "#e0e3e5",
+                    "error": "#ba1a1a",
+                    "surface-tint": "#1d5fa8",
+                    "surface-dim": "#d8dadc",
+                    "on-secondary-container": "#5d2300",
+                    "surface-bright": "#f7f9fb",
+                    "tertiary": "#422a7d",
+                    "primary": "#003b72",
+                    "tertiary-fixed": "#e9ddff",
+                    "error-container": "#ffdad6",
+                    "secondary-container": "#fc7728",
+                    "on-tertiary-fixed-variant": "#4f378a",
+                    "on-secondary": "#ffffff",
+                    "inverse-primary": "#a6c8ff",
+                    "on-secondary-fixed-variant": "#7a3000",
+                    "background": "#f7f9fb",
+                    "on-background": "#191c1e",
+                    "on-surface-variant": "#424751"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "8px",
+                    "lg": "40px",
+                    "sm": "12px",
+                    "xl": "64px",
+                    "max-width": "1440px",
+                    "md": "24px",
+                    "margin-desktop": "32px",
+                    "xs": "4px",
+                    "margin-mobile": "16px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "label-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "title-md": ["Inter"],
+                    "title-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-md": ["11px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-lg": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "title-md": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f7f9fb; margin: 0; padding: 0; overflow-x: hidden; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; }
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.8); 
+            backdrop-filter: blur(24px); 
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.4); 
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        }
+        .glass-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -15px rgba(0, 59, 114, 0.1); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        canvas#shader-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen relative">
+<!-- Full-page Liquid Background Shader -->
+<canvas id="shader-canvas"></canvas>
+<!-- TopNavBar (Immersive Glassmorphic) -->
+<header class="sticky top-0 z-40 w-full bg-white/60 backdrop-blur-xl border-b border-outline-variant px-margin-desktop py-3">
+<div class="max-w-[1440px] mx-auto flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="flex flex-col">
+<h1 class="font-headline-md text-title-lg font-bold text-primary leading-tight">Dealer Growth</h1>
+<p class="font-label-lg text-[10px] text-on-surface-variant uppercase tracking-widest leading-none">AI Copilot • Sundaram Finance</p>
+</div>
+</div>
+<!-- Navigation Integrated into Header -->
+<nav class="hidden md:flex items-center gap-1 bg-surface-container-low/50 p-1 rounded-xl">
+<a class="px-4 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg font-label-lg text-sm transition-all" href="#">Dashboard</a>
+<a class="px-4 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg font-label-lg text-sm transition-all" href="#">Dealer Health</a>
+<a class="px-4 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg font-label-lg text-sm transition-all" href="#">Churn</a>
+<a class="px-4 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg font-label-lg text-sm transition-all" href="#">Insights</a>
+<a class="px-4 py-2 bg-primary text-on-primary rounded-lg font-label-lg text-sm transition-all" href="#">Reports</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="relative w-64 hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full bg-white/50 border-outline-variant border rounded-full py-1.5 pl-10 pr-4 text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container" placeholder="Search..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="hover:bg-surface-container rounded-full p-2 text-on-surface-variant"><span class="material-symbols-outlined">notifications</span></button>
+<div class="flex items-center gap-3 pl-3 border-l border-outline-variant">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary-fixed overflow-hidden flex items-center justify-center text-primary font-bold text-xs">RM</div>
+<div class="hidden xl:flex flex-col">
+<span class="font-label-lg text-on-surface font-bold leading-tight">Raghav Murali</span>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-tighter">Regional Manager</span>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant">arrow_drop_down</button>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas (No Sidebar Layout) -->
+<main class="max-w-[1440px] mx-auto p-margin-desktop space-y-xl relative z-10">
+<!-- Page Header -->
+<div class="flex justify-between items-end">
+<div class="space-y-1">
+<h2 class="font-headline-lg text-headline-lg text-primary tracking-tight">Intelligence Reports</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Access deep-dive analytics generated by the AI Copilot. Monitor regional performance, dealer health trends, and monthly growth benchmarks.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 glass-card rounded-xl border-outline text-primary font-label-lg text-label-lg hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                Last 30 Days
+            </button>
+<button class="flex items-center gap-2 px-6 py-2 bg-primary text-on-primary font-label-lg text-label-lg rounded-xl hover:opacity-90 shadow-lg transition-all active:scale-95">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                Generate Custom Report
+            </button>
+</div>
+</div>
+<!-- Monthly Reports Section -->
+<section class="space-y-6">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">calendar_month</span>
+<h3 class="font-title-lg text-title-lg text-on-surface">Monthly Reports</h3>
+</div>
+<a class="font-label-lg text-label-lg text-primary hover:underline" href="#">View Archive</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Report Card 1 -->
+<div class="glass-card rounded-2xl p-6 space-y-4 shadow-sm">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-primary-fixed rounded-lg">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">description</span>
+</div>
+<span class="font-label-md text-label-md px-2 py-1 bg-surface-container-highest text-on-surface-variant rounded">OCT 2023</span>
+</div>
+<div>
+<h4 class="font-title-md text-title-md text-on-surface">Consolidated Growth</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Full network performance audit and AI-driven growth forecasting.</p>
+</div>
+<div class="pt-4 border-t border-surface-container-high flex gap-2">
+<button class="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg bg-surface-container-low/50 hover:bg-surface-container-high transition-colors text-on-surface-variant font-label-lg text-label-lg">
+<span class="material-symbols-outlined text-[16px]">picture_as_pdf</span>
+                        PDF
+                    </button>
+<button class="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg bg-surface-container-low/50 hover:bg-surface-container-high transition-colors text-on-surface-variant font-label-lg text-label-lg">
+<span class="material-symbols-outlined text-[16px]">table_view</span>
+                        Excel
+                    </button>
+</div>
+</div>
+<!-- Report Card 2 -->
+<div class="glass-card rounded-2xl p-6 space-y-4 shadow-sm">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-secondary-fixed rounded-lg">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">analytics</span>
+</div>
+<span class="font-label-md text-label-md px-2 py-1 bg-surface-container-highest text-on-surface-variant rounded">SEP 2023</span>
+</div>
+<div>
+<h4 class="font-title-md text-title-md text-on-surface">Yield Analysis</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Detailed breakdown of interest margins and dealer profitability metrics.</p>
+</div>
+<div class="pt-4 border-t border-surface-container-high flex gap-2">
+<button class="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg bg-surface-container-low/50 hover:bg-surface-container-high transition-colors text-on-surface-variant font-label-lg text-label-lg">
+<span class="material-symbols-outlined text-[16px]">picture_as_pdf</span>
+                        PDF
+                    </button>
+<button class="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg bg-surface-container-low/50 hover:bg-surface-container-high transition-colors text-on-surface-variant font-label-lg text-label-lg">
+<span class="material-symbols-outlined text-[16px]">table_view</span>
+                        Excel
+                    </button>
+</div>
+</div>
+<!-- Report Card 3 -->
+<div class="glass-card rounded-2xl p-6 space-y-4 shadow-sm">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-tertiary-fixed rounded-lg">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">assignment_turned_in</span>
+</div>
+<span class="font-label-md text-label-md px-2 py-1 bg-surface-container-highest text-on-surface-variant rounded">AUG 2023</span>
+</div>
+<div>
+<h4 class="font-title-md text-title-md text-on-surface">Risk Assessment</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Credit quality review and delinquency trend identification across tiers.</p>
+</div>
+<div class="pt-4 border-t border-surface-container-high flex gap-2">
+<button class="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg bg-surface-container-low/50 hover:bg-surface-container-high transition-colors text-on-surface-variant font-label-lg text-label-lg">
+<span class="material-symbols-outlined text-[16px]">picture_as_pdf</span>
+                        PDF
+                    </button>
+<button class="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg bg-surface-container-low/50 hover:bg-surface-container-high transition-colors text-on-surface-variant font-label-lg text-label-lg">
+<span class="material-symbols-outlined text-[16px]">table_view</span>
+                        Excel
+                    </button>
+</div>
+</div>
+<!-- Report Card 4 -->
+<div class="glass-card rounded-2xl p-6 space-y-4 shadow-sm border-dashed">
+<div class="h-full flex flex-col items-center justify-center text-center p-4 space-y-2 opacity-60">
+<span class="material-symbols-outlined text-[48px] text-outline">history</span>
+<span class="font-label-lg text-label-lg">Access Previous Months</span>
+<button class="text-primary font-bold">Open Archive</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Regional Analytics Section (Bento Style) -->
+<section class="space-y-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">public</span>
+<h3 class="font-title-lg text-title-lg text-on-surface">Regional Analytics</h3>
+</div>
+<div class="bento-grid">
+<!-- Map / Visual Focus -->
+<div class="col-span-12 lg:col-span-8 glass-card rounded-2xl overflow-hidden min-h-[450px] relative">
+<div class="absolute inset-0 bg-surface-container-low/30">
+<img class="w-full h-full object-cover opacity-90" data-alt="South India regional map with data visualization overlays" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaZPITDOUQ59Etwj8dzu88vJLjHypEDYVCH_JvOZ6OG1h2XecGkZ0smk6WKMwd7_TFA9ugpcnqey5iI5XK1vYW1OAWfUFuE2VBt7-08rGbnJ_dD_Nk6-ZVqnzvLm_gIifQEQZcSXQ8_x3LvNUepF9CCDeViQDecHjBvQpmQ1EA94tSJFnuB5J60yMbikQwQJKt4e9w3XAc2HEgPzO2YhkY4em2w-wRJ7h0akS3XunAH6NnRXvmedrFJtreF108hRP5_8z_YdpnlZ8"/>
+</div>
+<div class="absolute top-8 left-8 p-6 glass-card rounded-xl space-y-4 max-w-xs shadow-xl">
+<h4 class="font-title-md text-title-md text-primary">Top Performing Region</h4>
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md">South-East</span>
+<span class="font-label-lg text-label-lg text-on-secondary-container bg-secondary-container/30 px-2 py-0.5 rounded-full">+12.4%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[85%]"></div>
+</div>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant italic">"Region showing significant churn resistance in Tier 2 cities."</p>
+</div>
+<div class="absolute bottom-8 right-8">
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-xl font-label-lg text-label-lg shadow-lg hover:shadow-primary/20 transition-all">Export Regional Data</button>
+</div>
+</div>
+<!-- Statistics Rail -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<div class="flex-1 glass-card p-8 rounded-2xl bg-primary-container/20 text-on-primary-container space-y-6">
+<h4 class="font-title-md text-title-md">Region Breakdown</h4>
+<div class="space-y-4">
+<div class="flex justify-between border-b border-primary/10 pb-3">
+<span class="font-body-md opacity-80">North Zone</span>
+<span class="font-label-lg font-bold">210 Dealers</span>
+</div>
+<div class="flex justify-between border-b border-primary/10 pb-3">
+<span class="font-body-md opacity-80">South Zone</span>
+<span class="font-label-lg font-bold">345 Dealers</span>
+</div>
+<div class="flex justify-between border-b border-primary/10 pb-3">
+<span class="font-body-md opacity-80">West Zone</span>
+<span class="font-label-lg font-bold">188 Dealers</span>
+</div>
+<div class="flex justify-between pt-1">
+<span class="font-body-md opacity-80">East Zone</span>
+<span class="font-label-lg font-bold">92 Dealers</span>
+</div>
+</div>
+</div>
+<div class="glass-card p-8 rounded-2xl space-y-4 border-l-4 border-error/50">
+<div class="flex items-center gap-3">
+<div class="p-2 bg-error-container rounded-lg">
+<span class="material-symbols-outlined text-error">warning</span>
+</div>
+<h4 class="font-title-md text-title-md text-on-surface">Churn Alerts</h4>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">4 regions identified with increasing dealer churn risk scores this quarter.</p>
+<button class="w-full py-2.5 border border-outline/30 text-on-surface-variant font-label-lg text-label-lg rounded-xl hover:bg-surface-container transition-colors">Download Alert Summary</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Dealer Performance Reports -->
+<section class="space-y-6 mb-24">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary">star</span>
+<h3 class="font-title-lg text-title-lg text-on-surface">Dealer Performance Reports</h3>
+</div>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-surface-container rounded-full text-on-surface-variant transition-colors"><span class="material-symbols-outlined">filter_list</span></button>
+<button class="p-2 hover:bg-surface-container rounded-full text-on-surface-variant transition-colors"><span class="material-symbols-outlined">sort</span></button>
+</div>
+</div>
+<div class="overflow-hidden glass-card rounded-2xl shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/60 border-b border-outline-variant">
+<th class="px-8 py-5 font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider">Dealer Profile</th>
+<th class="px-8 py-5 font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider">Health Status</th>
+<th class="px-8 py-5 font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider">Growth Score</th>
+<th class="px-8 py-5 font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider">Annual Vol.</th>
+<th class="px-8 py-5 font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high/40">
+<!-- Table Row 1 -->
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-8 py-5">
+<div class="flex items-center gap-4">
+<div class="w-11 h-11 bg-primary-fixed text-primary flex items-center justify-center rounded-xl font-bold border border-white shadow-sm">AS</div>
+<div>
+<div class="font-title-md text-title-md text-on-surface">Apex Soluations</div>
+<div class="font-label-md text-label-md text-on-surface-variant">Dealer ID: #SF-8802</div>
+</div>
+</div>
+</td>
+<td class="px-8 py-5">
+<span class="px-4 py-1 bg-green-100/50 text-green-800 rounded-full font-label-md text-label-md border border-green-200/50">Optimized</span>
+</td>
+<td class="px-8 py-5">
+<div class="flex items-center gap-2">
+<span class="font-title-md text-title-md">92</span>
+<span class="material-symbols-outlined text-primary text-[18px]">trending_up</span>
+</div>
+</td>
+<td class="px-8 py-5 font-body-md text-on-surface font-semibold">₹ 14.2 Cr</td>
+<td class="px-8 py-5 text-right space-x-2">
+<button class="p-2.5 hover:bg-surface-container rounded-xl transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">table_view</span>
+</button>
+<button class="p-2.5 hover:bg-surface-container rounded-xl transition-colors text-primary">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+</td>
+</tr>
+<!-- Table Row 2 -->
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-8 py-5">
+<div class="flex items-center gap-4">
+<div class="w-11 h-11 bg-secondary-fixed text-secondary flex items-center justify-center rounded-xl font-bold border border-white shadow-sm">MM</div>
+<div>
+<div class="font-title-md text-title-md text-on-surface">Metro Motors</div>
+<div class="font-label-md text-label-md text-on-surface-variant">Dealer ID: #SF-4431</div>
+</div>
+</div>
+</td>
+<td class="px-8 py-5">
+<span class="px-4 py-1 bg-amber-100/50 text-amber-800 rounded-full font-label-md text-label-md border border-amber-200/50">At Risk</span>
+</td>
+<td class="px-8 py-5">
+<div class="flex items-center gap-2">
+<span class="font-title-md text-title-md">44</span>
+<span class="material-symbols-outlined text-error text-[18px]">trending_down</span>
+</div>
+</td>
+<td class="px-8 py-5 font-body-md text-on-surface font-semibold">₹ 6.8 Cr</td>
+<td class="px-8 py-5 text-right space-x-2">
+<button class="p-2.5 hover:bg-surface-container rounded-xl transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">table_view</span>
+</button>
+<button class="p-2.5 hover:bg-surface-container rounded-xl transition-colors text-primary">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating BottomNavBar -->
+<footer class="fixed bottom-8 left-1/2 -translate-x-1/2 z-40">
+<div class="bg-white/70 backdrop-blur-2xl border border-white/50 px-8 py-4 rounded-[32px] shadow-2xl flex items-center gap-10">
+<div class="flex items-center gap-3 pr-8 border-r border-outline-variant/30">
+<div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-white text-[20px]">psychology</span>
+</div>
+<p class="font-label-md text-on-surface font-semibold whitespace-nowrap">AI Copilot Online</p>
+</div>
+<div class="flex items-center gap-8">
+<a class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all text-[24px]" href="#">home</a>
+<a class="material-symbols-outlined text-primary transition-all text-[24px]" href="#" style="font-variation-settings: 'FILL' 1;">description</a>
+<a class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all text-[24px]" href="#">query_stats</a>
+<a class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all text-[24px]" href="#">settings</a>
+</div>
+<button class="w-14 h-14 bg-primary text-on-primary rounded-2xl flex items-center justify-center shadow-xl hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[28px]">smart_toy</span>
+</button>
+</div>
+</footer>
+<!-- Export Modal -->
+<div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300" id="export-overlay">
+<div class="glass-card bg-white/95 rounded-2xl shadow-2xl p-10 max-w-md w-full scale-95 transition-transform duration-300">
+<div class="flex justify-between items-center mb-8">
+<h4 class="font-headline-md text-headline-md text-primary">Export Report</h4>
+<button class="text-on-surface-variant hover:text-on-surface p-1" onclick="toggleModal(false)">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="space-y-4">
+<div class="p-5 border border-primary-fixed bg-primary-fixed/10 rounded-2xl flex items-center gap-5 cursor-pointer hover:bg-primary-fixed/20 transition-colors">
+<span class="material-symbols-outlined text-primary text-[36px]">picture_as_pdf</span>
+<div>
+<p class="font-title-md text-title-md text-on-surface">High-Resolution PDF</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Best for presentations.</p>
+</div>
+</div>
+<div class="p-5 border border-outline-variant/50 rounded-2xl flex items-center gap-5 cursor-pointer hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant text-[36px]">table_view</span>
+<div>
+<p class="font-title-md text-title-md text-on-surface">Raw Data (XLSX)</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Full dataset for analysis.</p>
+</div>
+</div>
+</div>
+<div class="mt-10 flex justify-end gap-4">
+<button class="px-6 py-2.5 font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface" onclick="toggleModal(false)">Cancel</button>
+<button class="px-8 py-2.5 bg-primary text-on-primary font-label-lg text-label-lg rounded-xl shadow-lg shadow-primary/20">Proceed to Export</button>
+</div>
+</div>
+</div>
+<script>
+    // 1. WebGL Background Shader Initialization (Shared Component Style)
+    const shaderCanvas = document.getElementById('shader-canvas');
+    const gl = shaderCanvas.getContext('webgl');
+
+    if (gl) {
+        const vertexShaderSource = `
+            attribute vec2 position;
+            varying vec2 v_texCoord;
+            void main() {
+                v_texCoord = position * 0.5 + 0.5;
+                v_texCoord.y = 1.0 - v_texCoord.y;
+                gl_Position = vec4(position, 0.0, 1.0);
+            }
+        `;
+
+        const fragmentShaderSource = `
+            precision highp float;
+            varying vec2 v_texCoord;
+            uniform float u_time;
+            uniform vec2 u_resolution;
+
+            void main() {
+                vec2 uv = v_texCoord;
+                float t = u_time * 0.15;
+                vec2 p = uv * 4.0;
+                
+                for(int i = 1; i < 6; i++) {
+                    float fi = float(i);
+                    p += vec2(
+                        0.8 / fi * sin(fi * p.y + t + 0.4 * fi) + 0.5,
+                        0.5 / fi * sin(fi * p.x + t + 0.4 * fi + 1.4) + 0.5
+                    );
+                }
+                
+                vec3 color1 = vec3(0.003, 0.125, 0.247); // Deep Blue
+                vec3 color2 = vec3(0.007, 0.321, 0.607); // Brand Blue
+                vec3 color3 = vec3(0.968, 0.976, 0.984); // Surface Light
+                
+                float strength = 0.5 + 0.5 * sin(p.x + p.y);
+                vec3 finalColor = mix(color1, color2, strength);
+                finalColor = mix(finalColor, color3, pow(strength, 12.0) * 0.08); 
+                
+                gl_FragColor = vec4(finalColor * 0.96 + 0.04, 1.0);
+            }
+        `;
+
+        function createShader(gl, type, source) {
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            return shader;
+        }
+
+        const program = gl.createProgram();
+        gl.attachShader(program, createShader(gl, gl.VERTEX_SHADER, vertexShaderSource));
+        gl.attachShader(program, createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource));
+        gl.linkProgram(program);
+        gl.useProgram(program);
+
+        const positionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW);
+
+        const positionLocation = gl.getAttribLocation(program, "position");
+        gl.enableVertexAttribArray(positionLocation);
+        gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+        const uTimeLocation = gl.getUniformLocation(program, "u_time");
+        const uResolutionLocation = gl.getUniformLocation(program, "u_resolution");
+
+        function renderShader(time) {
+            shaderCanvas.width = window.innerWidth;
+            shaderCanvas.height = window.innerHeight;
+            gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+            gl.uniform1f(uTimeLocation, time * 0.001);
+            gl.uniform2f(uResolutionLocation, gl.canvas.width, gl.canvas.height);
+            gl.drawArrays(gl.TRIANGLES, 0, 6);
+            requestAnimationFrame(renderShader);
+        }
+        requestAnimationFrame(renderShader);
+    }
+
+    function toggleModal(show) {
+        const modal = document.getElementById('export-overlay');
+        const content = modal.querySelector('div');
+        if(show) {
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => content.classList.remove('scale-95'), 10);
+        } else {
+            content.classList.add('scale-95');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
+    }
+
+    document.querySelectorAll('button').forEach(btn => {
+        if(btn.textContent.includes('PDF') || btn.textContent.includes('Excel') || btn.querySelector('.material-symbols-outlined')?.textContent === 'download') {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                toggleModal(true);
+            });
+        }
+    });
+</script>
+</body></html>

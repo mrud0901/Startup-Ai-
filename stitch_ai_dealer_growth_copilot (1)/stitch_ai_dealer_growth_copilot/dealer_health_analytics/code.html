@@ -1,0 +1,541 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Dealer Health | Sundaram Finance AI Copilot</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .health-gauge {
+            transition: stroke-dashoffset 1s ease-in-out;
+        }
+        .bento-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .bento-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#a6c8ff",
+                        "inverse-surface": "#2d3133",
+                        "secondary-fixed-dim": "#ffb693",
+                        "on-tertiary-container": "#cebbff",
+                        "outline-variant": "#c2c6d3",
+                        "on-primary-container": "#a5c7ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#e6e8ea",
+                        "tertiary-container": "#5a4396",
+                        "tertiary-fixed-dim": "#cfbcff",
+                        "on-secondary-fixed": "#341000",
+                        "on-primary-fixed-variant": "#004787",
+                        "primary-fixed": "#d5e3ff",
+                        "surface-container": "#eceef0",
+                        "on-tertiary-fixed": "#22005d",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed": "#001c3b",
+                        "surface-variant": "#e0e3e5",
+                        "on-error": "#ffffff",
+                        "primary-container": "#00529b",
+                        "surface": "#f7f9fb",
+                        "secondary-fixed": "#ffdbcb",
+                        "secondary": "#a04100",
+                        "surface-container-low": "#f2f4f6",
+                        "on-surface": "#191c1e",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "outline": "#727782",
+                        "surface-container-highest": "#e0e3e5",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#1d5fa8",
+                        "surface-dim": "#d8dadc",
+                        "on-secondary-container": "#5d2300",
+                        "surface-bright": "#f7f9fb",
+                        "tertiary": "#422a7d",
+                        "primary": "#003b72",
+                        "tertiary-fixed": "#e9ddff",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#fc7728",
+                        "on-tertiary-fixed-variant": "#4f378a",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#a6c8ff",
+                        "on-secondary-fixed-variant": "#7a3000",
+                        "background": "#f7f9fb",
+                        "on-background": "#191c1e",
+                        "on-surface-variant": "#424751"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "lg": "40px",
+                        "sm": "12px",
+                        "xl": "64px",
+                        "max-width": "1440px",
+                        "md": "24px",
+                        "margin-desktop": "32px",
+                        "xs": "4px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "title-md": ["Inter"],
+                        "title-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-md": ["11px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-lg": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "title-md": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen overflow-x-hidden">
+<!-- Sidebar Shell -->
+<aside class="fixed left-0 top-0 h-screen z-40 flex flex-col bg-surface border-r border-outline-variant w-[280px] shadow-sm">
+<div class="p-6 flex flex-col gap-1">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Dealer Growth</h1>
+<p class="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-widest">AI Copilot</p>
+</div>
+<nav class="flex-1 px-4 py-2 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-lg text-label-lg">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container border-l-4 border-primary rounded-r-lg" href="#">
+<span class="material-symbols-outlined">health_and_safety</span>
+<span class="font-label-lg text-label-lg">Dealer Health</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">trending_down</span>
+<span class="font-label-lg text-label-lg">Churn Prediction</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-lg text-label-lg">AI Recommendations</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">insights</span>
+<span class="font-label-lg text-label-lg">Market Insights</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-lg text-label-lg">Dealer Directory</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-label-lg text-label-lg">Reports</span>
+</a>
+</nav>
+<div class="p-4 border-t border-outline-variant">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-lg text-label-lg">Settings</span>
+</a>
+</div>
+</aside>
+<!-- Top Navigation -->
+<header class="fixed top-0 right-0 left-[280px] z-30 flex justify-between items-center px-margin-desktop h-16 bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-6">
+<span class="font-title-lg text-title-lg font-black text-primary">Sundaram Finance</span>
+<div class="relative w-80">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-body-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="Search dealers..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="hover:bg-surface-container rounded-full p-2 transition-colors relative">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-secondary rounded-full"></span>
+</button>
+<button class="flex items-center gap-2 hover:bg-surface-container rounded-full p-1 pr-3 transition-colors">
+<span class="material-symbols-outlined text-primary-container text-4xl">account_circle</span>
+<span class="font-label-lg text-label-lg text-on-surface-variant">Admin User</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-[280px] pt-16 p-margin-desktop min-h-screen">
+<div class="max-w-[1440px] mx-auto space-y-gutter">
+<!-- Page Header & Filters -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Dealer Health Monitoring</h2>
+<p class="text-on-surface-variant font-body-md">AI-driven diagnostics and performance tracking for dealer network.</p>
+</div>
+<div class="flex flex-wrap items-center gap-3">
+<div class="bg-surface border border-outline-variant rounded-lg p-1 flex gap-1">
+<select class="bg-transparent border-none text-label-lg font-label-lg focus:ring-0 cursor-pointer">
+<option>All Regions</option>
+<option>North</option>
+<option>South</option>
+<option>East</option>
+<option>West</option>
+</select>
+<div class="w-[1px] bg-outline-variant my-1"></div>
+<select class="bg-transparent border-none text-label-lg font-label-lg focus:ring-0 cursor-pointer">
+<option>Performance</option>
+<option>High (80-100)</option>
+<option>Stable (50-79)</option>
+<option>At Risk (&lt;50)</option>
+</select>
+<div class="w-[1px] bg-outline-variant my-1"></div>
+<select class="bg-transparent border-none text-label-lg font-label-lg focus:ring-0 cursor-pointer">
+<option>Status</option>
+<option>Active</option>
+<option>Dormant</option>
+<option>Churn Warning</option>
+</select>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-label-lg flex items-center gap-2 shadow-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm">download</span>
+                        Export Report
+                    </button>
+</div>
+</div>
+<!-- Dashboard Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<div class="bento-card bg-surface border border-outline-variant rounded-xl p-6 flex flex-col gap-2">
+<div class="flex justify-between items-start">
+<span class="p-2 bg-green-50 text-green-600 rounded-lg material-symbols-outlined">health_and_safety</span>
+<span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded">+4.2%</span>
+</div>
+<span class="font-label-lg text-on-surface-variant">Network Avg Health</span>
+<span class="font-headline-md text-headline-md">78.5</span>
+</div>
+<div class="bento-card bg-surface border border-outline-variant rounded-xl p-6 flex flex-col gap-2">
+<div class="flex justify-between items-start">
+<span class="p-2 bg-blue-50 text-primary rounded-lg material-symbols-outlined">trending_up</span>
+<span class="text-xs font-bold text-primary bg-blue-50 px-2 py-1 rounded">82 Dealers</span>
+</div>
+<span class="font-label-lg text-on-surface-variant">Growing Portfolio</span>
+<span class="font-headline-md text-headline-md">₹142.4Cr</span>
+</div>
+<div class="bento-card bg-surface border border-outline-variant rounded-xl p-6 flex flex-col gap-2">
+<div class="flex justify-between items-start">
+<span class="p-2 bg-orange-50 text-secondary rounded-lg material-symbols-outlined">warning</span>
+<span class="text-xs font-bold text-secondary bg-orange-50 px-2 py-1 rounded">12 Critical</span>
+</div>
+<span class="font-label-lg text-on-surface-variant">Churn Risk Identified</span>
+<span class="font-headline-md text-headline-md">14</span>
+</div>
+<div class="bento-card bg-surface border border-outline-variant rounded-xl p-6 flex flex-col gap-2">
+<div class="flex justify-between items-start">
+<span class="p-2 bg-purple-50 text-tertiary rounded-lg material-symbols-outlined">bolt</span>
+<span class="text-xs font-bold text-tertiary bg-purple-50 px-2 py-1 rounded">Active</span>
+</div>
+<span class="font-label-lg text-on-surface-variant">AI Interventions</span>
+<span class="font-headline-md text-headline-md">256</span>
+</div>
+</div>
+<!-- Dealer Table Container -->
+<div class="bg-surface border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<h3 class="font-title-md text-title-md">Dealer Performance Index</h3>
+<div class="flex items-center gap-2 text-on-surface-variant text-label-lg">
+<span class="w-3 h-3 rounded-full bg-green-500"></span> Healthy
+                        <span class="w-3 h-3 rounded-full bg-yellow-500 ml-2"></span> At Risk
+                        <span class="w-3 h-3 rounded-full bg-red-500 ml-2"></span> Critical
+                    </div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-lowest text-on-surface-variant font-label-lg">
+<th class="px-6 py-4 font-semibold uppercase tracking-wider">Dealer Name</th>
+<th class="px-6 py-4 font-semibold uppercase tracking-wider">Region</th>
+<th class="px-6 py-4 font-semibold uppercase tracking-wider">Health Score</th>
+<th class="px-6 py-4 font-semibold uppercase tracking-wider">Monthly Disbursement</th>
+<th class="px-6 py-4 font-semibold uppercase tracking-wider">Delinquency Rate</th>
+<th class="px-6 py-4 font-semibold uppercase tracking-wider">Last Activity</th>
+<th class="px-6 py-4"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group" onclick="openDealerPanel('Sri Vinayaka Motors', 92)">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold">SV</div>
+<div>
+<div class="font-title-md text-on-surface">Sri Vinayaka Motors</div>
+<div class="text-xs text-outline">ID: DLR-99212</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-body-md">South - Bangalore</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-16 bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-green-500 h-full w-[92%]"></div>
+</div>
+<span class="font-bold text-green-600">92</span>
+</div>
+</td>
+<td class="px-6 py-4 text-body-md font-medium">₹4.2 Cr</td>
+<td class="px-6 py-4 text-body-md text-green-600">0.8%</td>
+<td class="px-6 py-4 text-body-md text-outline">2 hrs ago</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">chevron_right</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group" onclick="openDealerPanel('Precision Wheels', 42)">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold">PW</div>
+<div>
+<div class="font-title-md text-on-surface">Precision Wheels</div>
+<div class="text-xs text-outline">ID: DLR-88123</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-body-md">North - Delhi</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-16 bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-red-500 h-full w-[42%]"></div>
+</div>
+<span class="font-bold text-red-600">42</span>
+</div>
+</td>
+<td class="px-6 py-4 text-body-md font-medium">₹1.1 Cr</td>
+<td class="px-6 py-4 text-body-md text-red-600">4.5%</td>
+<td class="px-6 py-4 text-body-md text-outline">1 day ago</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">chevron_right</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group" onclick="openDealerPanel('Classic Automotives', 68)">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-bold">CA</div>
+<div>
+<div class="font-title-md text-on-surface">Classic Automotives</div>
+<div class="text-xs text-outline">ID: DLR-77543</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-body-md">West - Mumbai</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-16 bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-yellow-500 h-full w-[68%]"></div>
+</div>
+<span class="font-bold text-yellow-600">68</span>
+</div>
+</td>
+<td class="px-6 py-4 text-body-md font-medium">₹2.8 Cr</td>
+<td class="px-6 py-4 text-body-md text-yellow-600">1.9%</td>
+<td class="px-6 py-4 text-body-md text-outline">5 hrs ago</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">chevron_right</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 border-t border-outline-variant bg-surface flex items-center justify-between">
+<span class="text-label-lg text-on-surface-variant">Showing 3 of 422 dealers</span>
+<div class="flex gap-2">
+<button class="px-3 py-1 border border-outline-variant rounded-md hover:bg-surface-container transition-colors disabled:opacity-50" disabled="">Previous</button>
+<button class="px-3 py-1 bg-primary text-on-primary rounded-md shadow-sm">1</button>
+<button class="px-3 py-1 border border-outline-variant rounded-md hover:bg-surface-container transition-colors">2</button>
+<button class="px-3 py-1 border border-outline-variant rounded-md hover:bg-surface-container transition-colors">Next</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Side Detailed Insight Panel (Hidden by default) -->
+<div class="fixed top-0 right-0 h-screen w-full md:w-[500px] bg-surface z-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out border-l border-outline-variant overflow-y-auto" id="dealerPanel">
+<!-- Close & Header -->
+<div class="sticky top-0 bg-surface/80 backdrop-blur-md z-10 px-8 py-6 border-b border-outline-variant flex justify-between items-center">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface" id="panelDealerName">Dealer Insights</h3>
+<p class="text-on-surface-variant font-label-lg uppercase tracking-wider">Detailed Diagnostic Report</p>
+</div>
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors" onclick="closeDealerPanel()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="p-8 space-y-8">
+<!-- Health Gauge Section -->
+<div class="flex flex-col items-center gap-6 p-6 bg-surface-container-low rounded-2xl border border-outline-variant">
+<div class="relative w-48 h-48">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-highest" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" stroke-width="12"></circle>
+<circle class="health-gauge text-primary transition-all duration-1000" cx="96" cy="96" fill="transparent" id="gaugeProgress" r="88" stroke="currentColor" stroke-dasharray="553" stroke-dashoffset="553" stroke-linecap="round" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-5xl font-black text-on-surface" id="healthScoreValue">92</span>
+<span class="text-label-lg text-outline font-bold">SCORE</span>
+</div>
+</div>
+<div class="text-center">
+<div class="inline-block px-4 py-1.5 bg-green-50 text-green-700 rounded-full font-bold text-label-lg mb-2" id="healthBadge">HEALTHY STATUS</div>
+<p class="text-body-md text-on-surface-variant">The AI predicts a 94% retention probability for this dealer based on recent activity.</p>
+</div>
+</div>
+<!-- Performance Graph Placeholder -->
+<div>
+<div class="flex justify-between items-end mb-4">
+<h4 class="font-title-md text-title-md">Monthly Disbursement</h4>
+<span class="text-xs text-primary font-bold">LTM Performance</span>
+</div>
+<div class="h-48 w-full bg-surface-container-lowest border border-dashed border-outline-variant rounded-xl flex items-end justify-between p-4 gap-2">
+<div class="w-full bg-primary-container/20 rounded-t-sm h-1/2"></div>
+<div class="w-full bg-primary-container/20 rounded-t-sm h-2/3"></div>
+<div class="w-full bg-primary-container/20 rounded-t-sm h-3/4"></div>
+<div class="w-full bg-primary-container/40 rounded-t-sm h-1/2"></div>
+<div class="w-full bg-primary-container/40 rounded-t-sm h-5/6"></div>
+<div class="w-full bg-primary-container/60 rounded-t-sm h-2/3"></div>
+<div class="w-full bg-primary-container rounded-t-sm h-full"></div>
+</div>
+<div class="flex justify-between mt-2 text-[10px] font-bold text-outline uppercase">
+<span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span>
+</div>
+</div>
+<!-- Performance Metrics -->
+<div class="grid grid-cols-2 gap-4">
+<div class="p-4 bg-surface-container-lowest border border-outline-variant rounded-xl">
+<p class="text-label-lg text-on-surface-variant mb-1">Delinquency</p>
+<p class="text-title-lg font-bold text-green-600">0.82%</p>
+<p class="text-[10px] text-green-500">↓ 12% vs last month</p>
+</div>
+<div class="p-4 bg-surface-container-lowest border border-outline-variant rounded-xl">
+<p class="text-label-lg text-on-surface-variant mb-1">Stock Turnover</p>
+<p class="text-title-lg font-bold text-primary">18 Days</p>
+<p class="text-[10px] text-primary">Excellent liquidity</p>
+</div>
+</div>
+<!-- Activity Timeline -->
+<div>
+<h4 class="font-title-md text-title-md mb-6">Activity Timeline</h4>
+<div class="space-y-6 relative before:absolute before:left-[11px] before:top-2 before:bottom-0 before:w-0.5 before:bg-outline-variant">
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center ring-4 ring-surface">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+<div class="flex justify-between items-start">
+<h5 class="text-body-md font-bold text-on-surface">Quarterly Audit Passed</h5>
+<span class="text-[10px] text-outline">Today, 10:45 AM</span>
+</div>
+<p class="text-body-md text-on-surface-variant mt-1">Dealer completed the operational audit with zero major flags.</p>
+</div>
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-6 h-6 bg-blue-100 text-primary rounded-full flex items-center justify-center ring-4 ring-surface">
+<span class="material-symbols-outlined text-sm">payments</span>
+</div>
+<div class="flex justify-between items-start">
+<h5 class="text-body-md font-bold text-on-surface">Bulk Disbursement</h5>
+<span class="text-[10px] text-outline">Yesterday</span>
+</div>
+<p class="text-body-md text-on-surface-variant mt-1">₹85.2L disbursed for 12 commercial vehicles.</p>
+</div>
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-6 h-6 bg-orange-100 text-secondary rounded-full flex items-center justify-center ring-4 ring-surface">
+<span class="material-symbols-outlined text-sm">priority_high</span>
+</div>
+<div class="flex justify-between items-start">
+<h5 class="text-body-md font-bold text-on-surface">AI Health Warning</h5>
+<span class="text-[10px] text-outline">Oct 12</span>
+</div>
+<p class="text-body-md text-on-surface-variant mt-1">Slight dip in collection efficiency noticed in Zone B.</p>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="pt-6 border-t border-outline-variant flex gap-3">
+<button class="flex-1 py-3 bg-primary text-on-primary rounded-xl font-bold text-label-lg shadow-lg">Schedule Visit</button>
+<button class="flex-1 py-3 border border-outline-variant rounded-xl font-bold text-label-lg hover:bg-surface-container transition-colors">Call Dealer</button>
+</div>
+</div>
+</div>
+<!-- Floating Action Button -->
+<button class="fixed bottom-margin-desktop right-margin-desktop w-14 h-14 bg-secondary text-on-secondary rounded-full flex items-center justify-center shadow-xl hover:scale-110 active:scale-95 transition-all z-40">
+<span class="material-symbols-outlined text-2xl">add</span>
+</button>
+<script>
+        function openDealerPanel(name, score) {
+            const panel = document.getElementById('dealerPanel');
+            const nameEl = document.getElementById('panelDealerName');
+            const scoreEl = document.getElementById('healthScoreValue');
+            const progress = document.getElementById('gaugeProgress');
+            const badge = document.getElementById('healthBadge');
+            
+            nameEl.textContent = name;
+            scoreEl.textContent = score;
+            
+            // Set gauge color and badge based on score
+            if (score >= 80) {
+                progress.classList.remove('text-yellow-500', 'text-red-500');
+                progress.classList.add('text-green-500');
+                badge.className = "inline-block px-4 py-1.5 bg-green-50 text-green-700 rounded-full font-bold text-label-lg mb-2";
+                badge.textContent = "HEALTHY STATUS";
+            } else if (score >= 50) {
+                progress.classList.remove('text-green-500', 'text-red-500');
+                progress.classList.add('text-yellow-500');
+                badge.className = "inline-block px-4 py-1.5 bg-yellow-50 text-yellow-700 rounded-full font-bold text-label-lg mb-2";
+                badge.textContent = "STABLE STATUS";
+            } else {
+                progress.classList.remove('text-green-500', 'text-yellow-500');
+                progress.classList.add('text-red-500');
+                badge.className = "inline-block px-4 py-1.5 bg-red-50 text-red-700 rounded-full font-bold text-label-lg mb-2";
+                badge.textContent = "CRITICAL RISK";
+            }
+
+            // Animate progress (circumference is ~553)
+            const offset = 553 - (553 * score / 100);
+            progress.style.strokeDashoffset = offset;
+            
+            panel.classList.remove('translate-x-full');
+        }
+
+        function closeDealerPanel() {
+            const panel = document.getElementById('dealerPanel');
+            panel.classList.add('translate-x-full');
+            
+            // Reset gauge after animation
+            setTimeout(() => {
+                document.getElementById('gaugeProgress').style.strokeDashoffset = 553;
+            }, 300);
+        }
+    </script>
+</body></html>

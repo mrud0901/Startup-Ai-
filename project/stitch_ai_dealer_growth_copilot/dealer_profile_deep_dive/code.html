@@ -1,0 +1,447 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Dealer Profile - Sundaram Finance AI Copilot</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#a6c8ff",
+                    "inverse-surface": "#2d3133",
+                    "secondary-fixed-dim": "#ffb693",
+                    "on-tertiary-container": "#cebbff",
+                    "outline-variant": "#c2c6d3",
+                    "on-primary-container": "#a5c7ff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-high": "#e6e8ea",
+                    "tertiary-container": "#5a4396",
+                    "tertiary-fixed-dim": "#cfbcff",
+                    "on-secondary-fixed": "#341000",
+                    "on-primary-fixed-variant": "#004787",
+                    "primary-fixed": "#d5e3ff",
+                    "surface-container": "#eceef0",
+                    "on-tertiary-fixed": "#22005d",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed": "#001c3b",
+                    "surface-variant": "#e0e3e5",
+                    "on-error": "#ffffff",
+                    "primary-container": "#00529b",
+                    "surface": "#f7f9fb",
+                    "secondary-fixed": "#ffdbcb",
+                    "secondary": "#a04100",
+                    "surface-container-low": "#f2f4f6",
+                    "on-surface": "#191c1e",
+                    "inverse-on-surface": "#eff1f3",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "outline": "#727782",
+                    "surface-container-highest": "#e0e3e5",
+                    "error": "#ba1a1a",
+                    "surface-tint": "#1d5fa8",
+                    "surface-dim": "#d8dadc",
+                    "on-secondary-container": "#5d2300",
+                    "surface-bright": "#f7f9fb",
+                    "tertiary": "#422a7d",
+                    "primary": "#003b72",
+                    "tertiary-fixed": "#e9ddff",
+                    "error-container": "#ffdad6",
+                    "secondary-container": "#fc7728",
+                    "on-tertiary-fixed-variant": "#4f378a",
+                    "on-secondary": "#ffffff",
+                    "inverse-primary": "#a6c8ff",
+                    "on-secondary-fixed-variant": "#7a3000",
+                    "background": "#f7f9fb",
+                    "on-background": "#191c1e",
+                    "on-surface-variant": "#424751"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "8px",
+                    "lg": "40px",
+                    "sm": "12px",
+                    "xl": "64px",
+                    "max-width": "1440px",
+                    "md": "24px",
+                    "margin-desktop": "32px",
+                    "xs": "4px",
+                    "margin-mobile": "16px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "label-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "title-md": ["Inter"],
+                    "title-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-md": ["11px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-lg": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "title-md": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .chart-gradient {
+            background: linear-gradient(180deg, rgba(0, 82, 155, 0.1) 0%, rgba(0, 82, 155, 0) 100%);
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface custom-scrollbar">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-screen z-40 flex flex-col docked left-0 h-full w-[280px] bg-surface border-r border-outline-variant shadow-sm">
+<div class="p-6">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Dealer Growth</h1>
+<p class="font-label-lg text-label-lg text-on-surface-variant">AI Copilot</p>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-lg text-label-lg">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="health_and_safety">health_and_safety</span>
+<span class="font-label-lg text-label-lg">Dealer Health</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="trending_down">trending_down</span>
+<span class="font-label-lg text-label-lg">Churn Prediction</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="font-label-lg text-label-lg">AI Recommendations</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+<span class="font-label-lg text-label-lg">Market Insights</span>
+</a>
+<!-- Active State: Dealer Directory -->
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container border-l-4 border-primary transition-all duration-200 opacity-90 rounded-r-lg" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-label-lg text-label-lg">Dealer Directory</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-label-lg text-label-lg">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-lg text-label-lg">Settings</span>
+</a>
+</nav>
+<div class="p-6 border-t border-outline-variant mt-auto">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full border-2 border-primary-fixed" data-alt="Corporate headshot of a professional executive with a confident smile, wearing a tailored navy suit in a brightly lit modern glass office environment. The style is crisp and high-contrast, representing authority and reliability within the Sundaram Finance ecosystem." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIVu-xvdw05eweGJVD18ltZENnffbfSvyP2aVYeh5JD2VfmcaLK6EuNayKLl4Lcn2btR70T4kmzlJcQ4UQ1lhXxStodnoEYVXBmNRRh9DtzzKA5GwDNrlodyPeEm2twZbOgMJiPGBe0cSTDTI5MoTPZCZJA-fA5aVOboAAYqnyGSRkc2TB_TqYdbAHUPPVUgDcnqiGtBj6B4UP1NyhFcDcZWQ_tCqc5dLtuC0x5IqdKeiaiGrW6SdaRQa-pOs6kHvx6ZBD1n5atUc">
+<div>
+<p class="font-label-lg text-label-lg font-bold">Raghav Murali</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wider">Regional Manager</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 right-0 left-[280px] z-30 flex justify-between items-center px-margin-desktop h-16 bg-surface border-b border-outline-variant">
+<div class="flex items-center flex-1 max-w-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-body-md focus:outline-none focus:border-primary" placeholder="Search dealers, regions, or metrics..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="hover:bg-surface-container rounded-full p-2 transition-transform duration-150 active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+</button>
+<button class="hover:bg-surface-container rounded-full p-2 transition-transform duration-150 active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[280px] mt-16 p-margin-desktop max-w-[1440px]">
+<!-- Profile Header Section -->
+<section class="mb-10 flex flex-col md:flex-row justify-between items-end gap-6">
+<div class="flex items-center gap-6">
+<div class="w-24 h-24 rounded-2xl bg-primary-container flex items-center justify-center text-on-primary-container shadow-md">
+<span class="material-symbols-outlined scale-[2.5]" data-icon="storefront">storefront</span>
+</div>
+<div>
+<div class="flex items-center gap-3 mb-1">
+<h2 class="font-headline-lg text-headline-lg text-primary">Prestige Motors Chennai</h2>
+<span class="px-3 py-1 bg-secondary-container/10 text-secondary font-label-lg rounded-full border border-secondary/20">Platinum Dealer</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="location_on">location_on</span>
+<span class="font-body-md text-body-md">South Region • TN-01</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="calendar_today">calendar_today</span>
+<span class="font-body-md text-body-md">Partner since 2014</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-2 border border-outline text-primary font-label-lg rounded-lg hover:bg-surface-container transition-colors">Generate Report</button>
+<button class="px-6 py-2 bg-primary text-on-primary font-label-lg rounded-lg hover:opacity-90 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="smart_toy">smart_toy</span>
+                    AI Growth Strategy
+                </button>
+</div>
+</section>
+<!-- Bento Grid Content -->
+<div class="bento-grid">
+<!-- Health Score Card -->
+<div class="col-span-12 lg:col-span-4 bg-white rounded-xl p-6 shadow-sm border border-outline-variant flex flex-col justify-between">
+<div>
+<h3 class="font-title-md text-title-md text-on-surface mb-4">Overall Dealer Health</h3>
+<div class="flex items-center justify-center py-6 relative">
+<!-- Simple Circular Progress Mockup -->
+<svg class="w-40 h-40 transform -rotate-90">
+<circle class="text-surface-container" cx="80" cy="80" fill="transparent" r="70" stroke="currentColor" stroke-width="12"></circle>
+<circle class="text-primary transition-all duration-1000" cx="80" cy="80" fill="transparent" r="70" stroke="currentColor" stroke-dasharray="440" stroke-dashoffset="66" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-4xl font-black text-primary">85</span>
+<span class="text-xs font-bold text-on-surface-variant tracking-tighter uppercase">Healthy</span>
+</div>
+</div>
+</div>
+<div class="space-y-3 pt-4 border-t border-outline-variant">
+<div class="flex justify-between items-center">
+<span class="text-body-md text-on-surface-variant">Churn Risk</span>
+<span class="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-bold rounded uppercase">Low (12%)</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-body-md text-on-surface-variant">Market Share</span>
+<span class="font-title-md text-title-md">18.4%</span>
+</div>
+</div>
+</div>
+<!-- Performance Stats (Monthly Sales & Leads) -->
+<div class="col-span-12 lg:col-span-8 bg-white rounded-xl p-6 shadow-sm border border-outline-variant">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-title-md text-title-md text-on-surface">Monthly Sales Velocity</h3>
+<div class="flex gap-2">
+<button class="px-3 py-1 bg-primary text-on-primary text-xs font-bold rounded-lg">6M</button>
+<button class="px-3 py-1 bg-surface-container text-on-surface-variant text-xs font-bold rounded-lg">1Y</button>
+</div>
+</div>
+<div class="h-64 relative overflow-hidden">
+<div class="absolute inset-0 chart-gradient rounded-lg"></div>
+<!-- Mock Line Chart Path -->
+<svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
+<path d="M0 80 Q 20 70, 40 40 T 80 20 L 100 30" fill="none" stroke="#00529b" stroke-linecap="round" stroke-width="3"></path>
+<circle cx="40" cy="40" fill="#00529b" r="4"></circle>
+<text fill="#00529b" font-size="4" font-weight="bold" x="35" y="30">Peak Performance</text>
+</svg>
+</div>
+<div class="grid grid-cols-4 gap-4 mt-6">
+<div class="p-4 bg-surface rounded-lg">
+<p class="text-[10px] text-on-surface-variant uppercase font-bold mb-1">Total Sales</p>
+<p class="text-xl font-bold">428 <span class="text-green-500 text-xs">↑ 12%</span></p>
+</div>
+<div class="p-4 bg-surface rounded-lg">
+<p class="text-[10px] text-on-surface-variant uppercase font-bold mb-1">Leads Gen</p>
+<p class="text-xl font-bold">1,240 <span class="text-green-500 text-xs">↑ 8%</span></p>
+</div>
+<div class="p-4 bg-surface rounded-lg">
+<p class="text-[10px] text-on-surface-variant uppercase font-bold mb-1">Conv. Rate</p>
+<p class="text-xl font-bold">34.5% <span class="text-red-500 text-xs">↓ 2%</span></p>
+</div>
+<div class="p-4 bg-surface rounded-lg">
+<p class="text-[10px] text-on-surface-variant uppercase font-bold mb-1">Rating</p>
+<p class="text-xl font-bold flex items-center gap-1">4.8 <span class="material-symbols-outlined text-orange-400 text-sm" style="font-variation-settings: 'FILL' 1;">star</span></p>
+</div>
+</div>
+</div>
+<!-- AI Recommendations (Scrollable List) -->
+<div class="col-span-12 lg:col-span-5 bg-primary-container text-on-primary-container rounded-xl p-6 shadow-md">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<h3 class="font-title-md text-title-md font-bold">AI Growth Copilot Tips</h3>
+</div>
+<div class="space-y-4">
+<div class="p-4 bg-white/10 backdrop-blur rounded-lg border border-white/20">
+<div class="flex justify-between mb-2">
+<span class="text-[10px] font-bold uppercase tracking-widest text-primary-fixed">Priority: High</span>
+<span class="text-xs font-bold text-secondary-fixed">+15% Lead Potential</span>
+</div>
+<p class="font-body-md text-body-md mb-2">Optimize inventory for commercial vehicles in Chennai South hub. Demand is trending 20% higher than current stock levels.</p>
+<button class="text-xs font-bold underline underline-offset-4">Apply Auto-Allocation</button>
+</div>
+<div class="p-4 bg-white/10 backdrop-blur rounded-lg border border-white/20">
+<div class="flex justify-between mb-2">
+<span class="text-[10px] font-bold uppercase tracking-widest text-primary-fixed">Priority: Mid</span>
+<span class="text-xs font-bold text-secondary-fixed">+4% Conv. Rate</span>
+</div>
+<p class="font-body-md text-body-md">Leads from 'Web Direct' are stagnating. Recommend triggering the Re-engagement AI Bot for leads older than 48h.</p>
+<button class="text-xs font-bold underline underline-offset-4">Run Campaign</button>
+</div>
+<div class="p-4 bg-white/10 backdrop-blur rounded-lg border border-white/20">
+<p class="font-body-md text-body-md mb-2">Incentivize local fleet operators with special interest rates (limited time).</p>
+<button class="text-xs font-bold underline underline-offset-4">View Offer Templates</button>
+</div>
+</div>
+</div>
+<!-- Regional Map / Context -->
+<div class="col-span-12 lg:col-span-7 bg-white rounded-xl overflow-hidden shadow-sm border border-outline-variant relative h-[400px]">
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-surface-container-high" data-alt="A sophisticated minimalist digital map representation of Chennai, India, styled with professional corporate aesthetics. The map uses a palette of soft greys, deep navy blues for water bodies, and vibrant primary blue markers indicating dealer density. The lighting is clean and professional, resembling a high-end data visualization dashboard." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBoLOF07jLVKyQwwLbQH506G9S9GlUDWPM1VI8FdtBIKqYxlWf34JkOiiBp0pkOJyqVaddNc6ir0lSLJxCpuPeqwzXkkMh0GCfgXBEvtqt6EdLpTc-VK80hBs1Hhlc5-4enRIls9PIbcoQTDC-EG6-W_Pf3-JxFU0LWZVhQJxJeenOuKOo2iODeC2BWbj814fyyaDVyfxcOFu3n8nEaCEhXTqJRvSp_tr1DVZLniBS8-u_tuurhmoKkkSBhj_1ROgkD_c8su5fLq4A')"></div>
+</div>
+<div class="absolute bottom-6 left-6 z-10 glass-card p-4 rounded-xl max-w-sm">
+<h4 class="font-title-md text-title-md text-primary mb-2">Local Market Intelligence</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Competitor activity in OMR/Guindy area has increased by 12%. Prestige Motors maintains strong dominance in the North corridor.</p>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="text-[10px] font-bold uppercase">Prestige</span>
+</div>
+<div class="flex items-center gap-1">
+<div class="w-2 h-2 rounded-full bg-outline"></div>
+<span class="text-[10px] font-bold uppercase">Competitors</span>
+</div>
+</div>
+</div>
+<!-- Interactive Map Marker Overlay Mockup -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+<div class="relative">
+<div class="w-8 h-8 bg-primary rounded-full animate-ping absolute opacity-20"></div>
+<div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-on-primary shadow-lg border-2 border-white relative">
+<span class="material-symbols-outlined text-sm" data-icon="location_pin">location_pin</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Detail Activity Row (Data Table style but Airy) -->
+<section class="mt-margin-desktop bg-white rounded-xl p-6 shadow-sm border border-outline-variant">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-title-md text-title-md text-on-surface">Recent Transactional History</h3>
+<button class="text-primary font-label-lg hover:underline">See all activity</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="border-b border-outline-variant">
+<th class="pb-4 font-label-lg text-on-surface-variant">Transaction ID</th>
+<th class="pb-4 font-label-lg text-on-surface-variant">Asset Type</th>
+<th class="pb-4 font-label-lg text-on-surface-variant">Customer</th>
+<th class="pb-4 font-label-lg text-on-surface-variant">Value</th>
+<th class="pb-4 font-label-lg text-on-surface-variant">Status</th>
+<th class="pb-4 font-label-lg text-on-surface-variant text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-4 font-body-md font-bold">#SFC-882910</td>
+<td class="py-4 font-body-md">HCV - Long Haul</td>
+<td class="py-4 font-body-md">LogiTrans Solutions</td>
+<td class="py-4 font-body-md">₹ 42.50 Lakh</td>
+<td class="py-4">
+<span class="px-2 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded">Disbursed</span>
+</td>
+<td class="py-4 text-right">
+<button class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors" data-icon="more_vert">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-4 font-body-md font-bold">#SFC-882915</td>
+<td class="py-4 font-body-md">LCV - Delivery</td>
+<td class="py-4 font-body-md">Arun Fresh Mart</td>
+<td class="py-4 font-body-md">₹ 12.80 Lakh</td>
+<td class="py-4">
+<span class="px-2 py-1 bg-blue-100 text-blue-700 text-[10px] font-bold rounded">Approval Pending</span>
+</td>
+<td class="py-4 text-right">
+<button class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors" data-icon="more_vert">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-4 font-body-md font-bold">#SFC-882922</td>
+<td class="py-4 font-body-md">HCV - Tipper</td>
+<td class="py-4 font-body-md">Elite Builders</td>
+<td class="py-4 font-body-md">₹ 58.00 Lakh</td>
+<td class="py-4">
+<span class="px-2 py-1 bg-orange-100 text-orange-700 text-[10px] font-bold rounded">Verification</span>
+</td>
+<td class="py-4 text-right">
+<button class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors" data-icon="more_vert">more_vert</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+<!-- FAB Suppression: Details Screen. No FAB rendered here per requirements. -->
+<script>
+        // Micro-interactions for navigation
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function() {
+                // Mocking navigation change
+                console.log('Navigating to:', this.innerText.trim());
+            });
+        });
+
+        // Simple entry animation for bento boxes
+        window.addEventListener('DOMContentLoaded', () => {
+            const items = document.querySelectorAll('.bento-grid > div');
+            items.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = `all 0.5s ease-out ${index * 0.1}s`;
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, 100);
+            });
+        });
+    </script>
+</body></html>

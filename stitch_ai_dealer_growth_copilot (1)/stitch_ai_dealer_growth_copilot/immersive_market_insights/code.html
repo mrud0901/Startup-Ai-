@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Market Insights | Dealer Growth AI Copilot</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Three.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#a6c8ff",
+                        "inverse-surface": "#2d3133",
+                        "secondary-fixed-dim": "#ffb693",
+                        "on-tertiary-container": "#cebbff",
+                        "outline-variant": "#c2c6d3",
+                        "on-primary-container": "#a5c7ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#e6e8ea",
+                        "tertiary-container": "#5a4396",
+                        "tertiary-fixed-dim": "#cfbcff",
+                        "on-secondary-fixed": "#341000",
+                        "on-primary-fixed-variant": "#004787",
+                        "primary-fixed": "#d5e3ff",
+                        "surface-container": "#eceef0",
+                        "on-tertiary-fixed": "#22005d",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed": "#001c3b",
+                        "surface-variant": "#e0e3e5",
+                        "on-error": "#ffffff",
+                        "primary-container": "#00529b",
+                        "surface": "#f7f9fb",
+                        "secondary-fixed": "#ffdbcb",
+                        "secondary": "#a04100",
+                        "surface-container-low": "#f2f4f6",
+                        "on-surface": "#191c1e",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "outline": "#727782",
+                        "surface-container-highest": "#e0e3e5",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#1d5fa8",
+                        "surface-dim": "#d8dadc",
+                        "on-secondary-container": "#5d2300",
+                        "surface-bright": "#f7f9fb",
+                        "tertiary": "#422a7d",
+                        "primary": "#003b72",
+                        "tertiary-fixed": "#e9ddff",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#fc7728",
+                        "on-tertiary-fixed-variant": "#4f378a",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#a6c8ff",
+                        "on-secondary-fixed-variant": "#7a3000",
+                        "background": "#f7f9fb",
+                        "on-background": "#191c1e",
+                        "on-surface-variant": "#424751"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "lg": "40px",
+                        "sm": "12px",
+                        "xl": "64px",
+                        "max-width": "1440px",
+                        "md": "24px",
+                        "margin-desktop": "32px",
+                        "xs": "4px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "title-md": ["Inter"],
+                        "title-lg": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -15px rgba(0, 59, 114, 0.2);
+        }
+        .map-gradient {
+            background: linear-gradient(135deg, #00529b 0%, #fc7728 100%);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #c2c6d3; border-radius: 10px; }
+        
+        canvas#shader-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased selection:bg-primary-fixed-dim">
+<canvas id="shader-canvas"></canvas>
+<!-- TOP NAVIGATION -->
+<header class="sticky top-0 z-40 w-full bg-white/60 backdrop-blur-xl border-b border-outline-variant px-8 py-3">
+<div class="max-w-[1440px] mx-auto flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 relative" id="ai-core-header-container"></div>
+<div class="flex flex-col">
+<h1 class="font-headline-md text-title-lg font-bold text-primary leading-tight">Dealer Growth</h1>
+<p class="font-label-lg text-[10px] text-on-surface-variant uppercase tracking-widest leading-none">AI Copilot • Sundaram Finance</p>
+</div>
+</div>
+<!-- Navigation Integrated into Header -->
+<nav class="hidden md:flex items-center gap-1 bg-surface-container-low/50 p-1 rounded-xl">
+<a class="px-4 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg font-label-lg text-sm transition-all" href="#">Dashboard</a>
+<a class="px-4 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg font-label-lg text-sm transition-all" href="#">Dealer Health</a>
+<a class="px-4 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg font-label-lg text-sm transition-all" href="#">Churn</a>
+<a class="px-4 py-2 bg-primary text-on-primary rounded-lg font-label-lg text-sm transition-all" href="#">Insights</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="relative w-64 hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full bg-white/50 border-outline-variant rounded-full py-1.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary-container" placeholder="Search markets..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="hover:bg-surface-container rounded-full p-2 text-on-surface-variant"><span class="material-symbols-outlined">notifications</span></button>
+<div class="flex items-center gap-2 pl-2 border-l border-outline-variant">
+<div class="w-8 h-8 rounded-full bg-primary-fixed-dim flex items-center justify-center text-primary font-bold text-[12px]">RM</div>
+<span class="hidden xl:block font-label-md text-on-surface">Raghav Murali</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- MAIN CONTENT AREA -->
+<main class="min-h-screen relative z-10">
+<!-- DASHBOARD CANVAS -->
+<div class="pt-10 px-margin-desktop pb-24 max-w-[1440px] mx-auto">
+<!-- HEADER SECTION -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary mb-1">Market Insights</h2>
+<p class="text-on-surface-variant">Geographic penetration and untapped growth opportunities across India.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-5 py-2.5 border border-outline bg-white/50 backdrop-blur-sm rounded-xl font-label-lg text-primary hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+                        Last Q3 2024
+                    </button>
+<button class="flex items-center gap-2 px-6 py-2.5 bg-primary text-on-primary rounded-xl font-label-lg shadow-lg hover:shadow-primary/20 transition-all active:scale-95">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+                        Advanced Filters
+                    </button>
+</div>
+</div>
+<!-- BENTO GRID LAYOUT -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- MAIN INTERACTIVE MAP -->
+<section class="col-span-12 lg:col-span-8 glass-card rounded-2xl overflow-hidden flex flex-col h-[600px]">
+<div class="p-6 border-b border-surface-container-high flex justify-between items-center bg-white/30">
+<div>
+<h3 class="font-title-lg text-title-lg text-on-surface">Market Density Heatmap</h3>
+<p class="text-label-md text-on-surface-variant">State-wise dealer saturation &amp; market share</p>
+</div>
+<div class="flex bg-surface-container-low/50 p-1 rounded-lg">
+<button class="px-3 py-1 text-xs font-bold bg-white shadow-sm rounded-md text-primary">State</button>
+<button class="px-3 py-1 text-xs font-medium text-on-surface-variant hover:text-on-surface">District</button>
+<button class="px-3 py-1 text-xs font-medium text-on-surface-variant hover:text-on-surface">Cluster</button>
+</div>
+</div>
+<div class="relative flex-1 bg-transparent flex items-center justify-center p-8">
+<!-- Map Mockup Container -->
+<div class="relative w-full h-full max-w-3xl mx-auto flex items-center justify-center">
+<div class="relative z-10 w-full h-full flex items-center justify-center">
+<img class="w-full h-full object-contain filter drop-shadow-2xl" data-alt="A stylized, modern topographic vector map of India with high-contrast color coding. The map uses deep navy blue for high density regions and vibrant, glowing orange for untapped markets." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYyT44yRuh9BhQ5xsrImfoZ5XLvpHgthmrY5cpE9e7M6HS0eKeSP4lMW7EN0rnQMy__e7tcFUh_79ll9KhUnmUTNBqN3TQFZQuopyyF-lIibCoy47lhgcrLQPrayEfovOCMJQ6eAyjhXdYRhFzUFppvHwRSrrAoi4HZXfz4SjPaUaEhwdzaBcRuxzRUirE5feW4TZKHzaPxIMsYm7cy25vmgs8WswL8Cek1PQKn5ngN_zijvkf-_cTAKuimvywT-_90rq-KuyYtyY"/>
+</div>
+<!-- Legend Overlay -->
+<div class="absolute bottom-4 left-4 bg-white/70 backdrop-blur-md p-4 rounded-xl shadow-lg border border-white/40">
+<p class="text-[10px] uppercase tracking-wider font-bold text-on-surface-variant mb-2">Penetration Scale</p>
+<div class="h-2 w-48 rounded-full map-gradient mb-1"></div>
+<div class="flex justify-between text-[9px] font-bold text-on-surface-variant">
+<span>UNDERSERVED</span>
+<span>SATURATED</span>
+</div>
+</div>
+<!-- Floating Tooltip Example -->
+<div class="absolute top-1/4 right-1/4 bg-white/80 backdrop-blur-md p-3 rounded-lg shadow-xl border border-primary/20 animate-bounce duration-[3000ms]">
+<p class="text-xs font-bold text-primary">Maharashtra</p>
+<div class="flex items-center gap-4 mt-1">
+<div>
+<p class="text-[9px] text-on-surface-variant">Dealers</p>
+<p class="text-sm font-bold">142</p>
+</div>
+<div class="w-px h-6 bg-outline-variant"></div>
+<div>
+<p class="text-[9px] text-on-surface-variant">Growth</p>
+<p class="text-sm font-bold text-secondary">+12.4%</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- UNTAPPED OPPORTUNITIES -->
+<section class="col-span-12 lg:col-span-4 space-y-gutter">
+<!-- Top Opportunity Card -->
+<div class="bg-primary-container/90 backdrop-blur-md rounded-2xl p-6 text-on-primary-container relative overflow-hidden group shadow-xl">
+<div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl transition-transform group-hover:scale-110"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined p-2 bg-white/20 rounded-lg">rocket_launch</span>
+<h3 class="font-title-md text-title-md">Prime Opportunity</h3>
+</div>
+<h4 class="text-2xl font-bold mb-1">Uttar Pradesh East</h4>
+<p class="text-sm opacity-80 mb-6">High tractor demand detected with &lt; 15% dealer coverage. AI predicts 22% growth potential.</p>
+<button class="w-full py-3 bg-white text-primary font-bold rounded-lg hover:bg-on-primary-container hover:text-white transition-all shadow-md">
+                                View Cluster Strategy
+                            </button>
+</div>
+</div>
+<!-- Region Ranking -->
+<div class="glass-card rounded-2xl p-6">
+<h3 class="font-title-md text-title-md text-on-surface mb-4">Regional Comparison</h3>
+<div class="space-y-5">
+<div class="group cursor-pointer">
+<div class="flex justify-between items-end mb-2">
+<span class="text-xs font-bold text-on-surface-variant">Southern Zone</span>
+<span class="text-sm font-black text-primary">88%</span>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[88%] rounded-full shadow-[0_0_8px_rgba(0,59,114,0.4)]"></div>
+</div>
+</div>
+<div class="group cursor-pointer">
+<div class="flex justify-between items-end mb-2">
+<span class="text-xs font-bold text-on-surface-variant">Western Zone</span>
+<span class="text-sm font-black text-primary">64%</span>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[64%] rounded-full shadow-[0_0_8px_rgba(0,59,114,0.4)]"></div>
+</div>
+</div>
+<div class="group cursor-pointer">
+<div class="flex justify-between items-end mb-2">
+<span class="text-xs font-bold text-on-surface-variant">Northern Zone</span>
+<span class="text-sm font-black text-secondary">41%</span>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[41%] rounded-full shadow-[0_0_8px_rgba(160,65,0,0.4)]"></div>
+</div>
+</div>
+<div class="group cursor-pointer">
+<div class="flex justify-between items-end mb-2">
+<span class="text-xs font-bold text-on-surface-variant">Eastern Zone</span>
+<span class="text-sm font-black text-secondary">29%</span>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[29%] rounded-full shadow-[0_0_8px_rgba(160,65,0,0.4)]"></div>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 text-center text-xs font-bold text-primary hover:underline">Download Comprehensive Report</button>
+</div>
+</section>
+<!-- METRIC CARDS -->
+<div class="col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<div class="glass-card p-5 rounded-2xl">
+<div class="flex items-center gap-3 mb-3">
+<span class="material-symbols-outlined text-primary bg-primary-fixed p-2 rounded-lg">person_pin_circle</span>
+<span class="text-xs font-bold text-on-surface-variant">Total Active Dealers</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-bold">1,842</span>
+<span class="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">+4.2%</span>
+</div>
+</div>
+<div class="glass-card p-5 rounded-2xl">
+<div class="flex items-center gap-3 mb-3">
+<span class="material-symbols-outlined text-secondary bg-secondary-fixed p-2 rounded-lg">distance</span>
+<span class="text-xs font-bold text-on-surface-variant">Avg. Service Radius</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-bold">42.8 km</span>
+<span class="text-xs font-medium text-red-600 bg-red-50 px-2 py-0.5 rounded">-1.2 km</span>
+</div>
+</div>
+<div class="glass-card p-5 rounded-2xl">
+<div class="flex items-center gap-3 mb-3">
+<span class="material-symbols-outlined text-tertiary bg-tertiary-fixed p-2 rounded-lg">grid_view</span>
+<span class="text-xs font-bold text-on-surface-variant">Market Share Density</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-bold">34.1%</span>
+<span class="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">+2.8%</span>
+</div>
+</div>
+<div class="glass-card p-5 rounded-2xl">
+<div class="flex items-center gap-3 mb-3">
+<span class="material-symbols-outlined text-blue-600 bg-blue-50 p-2 rounded-lg">monitoring</span>
+<span class="text-xs font-bold text-on-surface-variant">Forecast Accuracy</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-bold">92.4%</span>
+<span class="text-xs font-medium text-primary bg-primary-fixed px-2 py-0.5 rounded">High</span>
+</div>
+</div>
+</div>
+<!-- STATE-WISE DENSITY TABLE -->
+<section class="col-span-12 glass-card rounded-2xl overflow-hidden shadow-lg">
+<div class="p-6 border-b border-surface-container-high/50 flex flex-col md:flex-row justify-between md:items-center gap-4 bg-white/40">
+<div>
+<h3 class="font-title-lg text-title-lg text-on-surface">State-wise Dealer Density</h3>
+<p class="text-label-md text-on-surface-variant">Detailed performance breakdown by administrative boundary</p>
+</div>
+<div class="flex gap-2">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-sm text-on-surface-variant">search</span>
+<input class="text-xs bg-white/50 border-outline-variant rounded-lg pl-8 pr-4 py-2 focus:ring-primary w-48" placeholder="Filter states..." type="text"/>
+</div>
+<button class="px-4 py-2 bg-white/50 border border-outline-variant rounded-lg text-xs font-bold hover:bg-surface-container transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">download</span> Export
+                            </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/60 border-b border-outline-variant">
+<th class="px-6 py-4 text-xs font-black text-on-surface-variant uppercase tracking-wider">State / UT</th>
+<th class="px-6 py-4 text-xs font-black text-on-surface-variant uppercase tracking-wider">Dealers</th>
+<th class="px-6 py-4 text-xs font-black text-on-surface-variant uppercase tracking-wider">Coverage</th>
+<th class="px-6 py-4 text-xs font-black text-on-surface-variant uppercase tracking-wider">Churn Risk</th>
+<th class="px-6 py-4 text-xs font-black text-on-surface-variant uppercase tracking-wider">Potential</th>
+<th class="px-6 py-4 text-xs font-black text-on-surface-variant uppercase tracking-wider text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high/40">
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-fixed flex items-center justify-center font-bold text-primary text-xs">TN</div>
+<span class="text-sm font-bold">Tamil Nadu</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm">248</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1.5 bg-surface-container rounded-full max-w-[80px]">
+<div class="h-full bg-primary w-[92%] rounded-full"></div>
+</div>
+<span class="text-xs font-medium">92%</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-bold rounded uppercase">Low</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm font-bold text-on-surface-variant">Moderate</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:bg-primary-fixed p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-secondary-fixed flex items-center justify-center font-bold text-secondary text-xs">UP</div>
+<span class="text-sm font-bold">Uttar Pradesh</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm">184</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1.5 bg-surface-container rounded-full max-w-[80px]">
+<div class="h-full bg-secondary w-[34%] rounded-full"></div>
+</div>
+<span class="text-xs font-medium">34%</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-amber-50 text-amber-700 text-[10px] font-bold rounded uppercase">Medium</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm font-bold text-secondary">Extreme High</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:bg-primary-fixed p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-fixed flex items-center justify-center font-bold text-primary text-xs">KA</div>
+<span class="text-sm font-bold">Karnataka</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm">162</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1.5 bg-surface-container rounded-full max-w-[80px]">
+<div class="h-full bg-primary w-[78%] rounded-full"></div>
+</div>
+<span class="text-xs font-medium">78%</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-bold rounded uppercase">Low</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm font-bold text-on-surface-variant">High</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:bg-primary-fixed p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-secondary-fixed flex items-center justify-center font-bold text-secondary text-xs">BI</div>
+<span class="text-sm font-bold">Bihar</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm">94</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1.5 bg-surface-container rounded-full max-w-[80px]">
+<div class="h-full bg-secondary w-[21%] rounded-full"></div>
+</div>
+<span class="text-xs font-medium">21%</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-red-50 text-red-700 text-[10px] font-bold rounded uppercase">High</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm font-bold text-secondary">Very High</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:bg-primary-fixed p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-outline-variant/30 bg-white/20 flex justify-center">
+<button class="text-xs font-bold text-primary py-2 px-6 hover:bg-white/60 rounded-lg transition-colors">Load More Regions</button>
+</div>
+</section>
+<!-- AI INSIGHTS PANEL -->
+<section class="col-span-12 glass-card rounded-2xl p-8 relative overflow-hidden bg-primary/90 text-white border-none shadow-2xl">
+<div class="absolute inset-0 z-0 bg-gradient-to-r from-primary to-tertiary opacity-90"></div>
+<div class="relative z-10 flex flex-col md:flex-row items-center gap-8">
+<div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center shrink-0 backdrop-blur-md">
+<span class="material-symbols-outlined text-white text-4xl" style="font-variation-settings: 'FILL' 1;">psychology</span>
+</div>
+<div class="flex-1 text-center md:text-left">
+<h3 class="text-2xl font-bold mb-2">Expansion Opportunity Detected</h3>
+<p class="text-white/90 max-w-2xl opacity-90 leading-relaxed">
+                                Our AI analysis identifies a significant service vacuum in the **Aurangabad-Nashik** corridor. Establishing 3 high-tier dealerships here could potentially capture **₹14.2 Cr** in untapped vehicle financing within 18 months.
+                            </p>
+</div>
+<div class="flex gap-4">
+<button class="px-6 py-3 bg-white text-primary font-bold rounded-xl hover:scale-105 transition-transform active:scale-95 shadow-xl">
+                                Generate Strategy
+                            </button>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- FLOATING BOTTOM NAV BAR -->
+<footer class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
+<div class="bg-white/70 backdrop-blur-2xl border border-white/50 px-8 py-4 rounded-3xl shadow-2xl flex items-center gap-8">
+<div class="flex items-center gap-3 pr-8 border-r border-outline-variant/30">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-white text-[18px]">psychology</span>
+</div>
+<p class="font-label-md text-on-surface font-medium whitespace-nowrap">AI Copilot Online</p>
+</div>
+<div class="flex items-center gap-6">
+<a class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all text-[24px]" href="#">home</a>
+<a class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all text-[24px]" href="#">description</a>
+<a class="material-symbols-outlined text-primary transition-all text-[24px] font-bold" href="#" style="font-variation-settings: 'FILL' 1;">insights</a>
+<a class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all text-[24px]" href="#">settings</a>
+</div>
+<button class="w-12 h-12 bg-primary text-on-primary rounded-2xl flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined">smart_toy</span>
+</button>
+</div>
+</footer>
+<!-- FLOATING ACTION BUTTON (Contextual) -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-secondary-container text-on-secondary-container rounded-full shadow-2xl flex items-center justify-center z-50 hover:scale-110 active:scale-95 transition-all group">
+<span class="material-symbols-outlined text-3xl group-hover:rotate-12 transition-transform">add_business</span>
+<span class="absolute right-full mr-4 bg-on-surface text-white text-xs px-3 py-1.5 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none font-bold">New Dealer Onboarding</span>
+</button>
+<script>
+    // WebGL Background Shader Initialization
+    const shaderCanvas = document.getElementById('shader-canvas');
+    const gl = shaderCanvas.getContext('webgl');
+
+    if (gl) {
+        const vertexShaderSource = `
+            attribute vec2 position;
+            varying vec2 v_texCoord;
+            void main() {
+                v_texCoord = position * 0.5 + 0.5;
+                v_texCoord.y = 1.0 - v_texCoord.y;
+                gl_Position = vec4(position, 0.0, 1.0);
+            }
+        `;
+
+        const fragmentShaderSource = `
+            precision highp float;
+            varying vec2 v_texCoord;
+            uniform float u_time;
+            uniform vec2 u_resolution;
+            uniform vec2 u_mouse;
+
+            void main() {
+                vec2 uv = v_texCoord;
+                vec2 mouse = u_mouse / u_resolution;
+                float t = u_time * 0.15;
+                vec2 p = uv * 4.0;
+                
+                for(int i = 1; i < 6; i++) {
+                    float fi = float(i);
+                    p += vec2(
+                        0.8 / fi * sin(fi * p.y + t + 0.4 * fi) + 0.5 + mouse.x * 0.05,
+                        0.5 / fi * sin(fi * p.x + t + 0.4 * fi + 1.4) + 0.5 + mouse.y * 0.05
+                    );
+                }
+                
+                vec3 color1 = vec3(0.003, 0.125, 0.247); // Deep Blue
+                vec3 color2 = vec3(0.007, 0.321, 0.607); // Brand Blue
+                vec3 color3 = vec3(0.968, 0.976, 0.984); // Surface Light
+                
+                float strength = 0.5 + 0.5 * sin(p.x + p.y);
+                vec3 finalColor = mix(color1, color2, strength);
+                finalColor = mix(finalColor, color3, pow(strength, 12.0) * 0.08); 
+                
+                gl_FragColor = vec4(finalColor * 0.96 + 0.04, 1.0);
+            }
+        `;
+
+        function createShader(gl, type, source) {
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            return shader;
+        }
+
+        const program = gl.createProgram();
+        gl.attachShader(program, createShader(gl, gl.VERTEX_SHADER, vertexShaderSource));
+        gl.attachShader(program, createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource));
+        gl.linkProgram(program);
+        gl.useProgram(program);
+
+        const positionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW);
+
+        const positionLocation = gl.getAttribLocation(program, "position");
+        gl.enableVertexAttribArray(positionLocation);
+        gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+        const uTimeLocation = gl.getUniformLocation(program, "u_time");
+        const uResolutionLocation = gl.getUniformLocation(program, "u_resolution");
+        const uMouseLocation = gl.getUniformLocation(program, "u_mouse");
+
+        let mousePos = { x: 0, y: 0 };
+        window.addEventListener('mousemove', (e) => {
+            mousePos.x = e.clientX;
+            mousePos.y = e.clientY;
+        });
+
+        function renderShader(time) {
+            shaderCanvas.width = window.innerWidth;
+            shaderCanvas.height = window.innerHeight;
+            gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+            gl.uniform1f(uTimeLocation, time * 0.001);
+            gl.uniform2f(uResolutionLocation, gl.canvas.width, gl.canvas.height);
+            gl.uniform2f(uMouseLocation, mousePos.x, mousePos.y);
+
+            gl.drawArrays(gl.TRIANGLES, 0, 6);
+            requestAnimationFrame(renderShader);
+        }
+        requestAnimationFrame(renderShader);
+    }
+
+    // Three.js AI Core Initialization for header
+    function initThreeJS(containerId, scale = 1, opacity = 0.3) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+
+        renderer.setSize(width, height);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        const pointLight = new THREE.PointLight(0x00529b, 3);
+        pointLight.position.set(5, 5, 5);
+        scene.add(pointLight);
+        scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+
+        const geometry = new THREE.IcosahedronGeometry(1, 1);
+        const material = new THREE.MeshPhongMaterial({
+            color: 0x00529b,
+            wireframe: true,
+            transparent: true,
+            opacity: opacity
+        });
+        const core = new THREE.Mesh(geometry, material);
+        core.scale.set(scale, scale, scale);
+        scene.add(core);
+
+        const innerGeo = new THREE.IcosahedronGeometry(0.5, 0);
+        const innerMat = new THREE.MeshPhongMaterial({
+            color: 0xfc7728,
+            emissive: 0xfc7728,
+            emissiveIntensity: 0.6
+        });
+        const innerCore = new THREE.Mesh(innerGeo, innerMat);
+        innerCore.scale.set(scale, scale, scale);
+        scene.add(innerCore);
+
+        camera.position.z = 2.5;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            core.rotation.y += 0.004;
+            core.rotation.z += 0.002;
+            innerCore.rotation.y -= 0.012;
+            renderer.render(scene, camera);
+        }
+        animate();
+    }
+
+    initThreeJS('ai-core-header-container', 0.6, 0.2);
+
+    // Interaction micro-interactions
+    document.querySelectorAll('tbody tr').forEach(row => {
+        row.addEventListener('mouseenter', () => {
+            row.style.transform = 'translateX(4px)';
+            row.style.transition = 'transform 0.2s ease-out';
+        });
+        row.addEventListener('mouseleave', () => {
+            row.style.transform = 'translateX(0)';
+        });
+    });
+</script>
+</body></html>
