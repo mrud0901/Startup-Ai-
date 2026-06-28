@@ -1,4 +1,4 @@
-# Sundaram Finance AI Dealer Growth Copilot
+# Startup AI Dealer Growth Copilot
 
 A production-quality enterprise web application transforming dealer network data into actionable growth strategies using AI precision. 
 
