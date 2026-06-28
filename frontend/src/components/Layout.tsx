@@ -1,11 +1,14 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import ShaderBackground from './ShaderBackground';
 import * as THREE from 'three';
+import { useAuth } from '../context/AuthContext';
 
 const Layout = () => {
   const location = useLocation();
   const headerCoreRef = useRef<HTMLDivElement>(null);
+  const { user, logout } = useAuth();
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   // Initialize small header AI core
   useEffect(() => {
@@ -77,36 +80,42 @@ const Layout = () => {
   const navLinks = [
     { path: '/dashboard', label: 'Dashboard' },
     { path: '/health', label: 'Dealer Health' },
-    { path: '/churn', label: 'Churn' },
-    { path: '/insights', label: 'Insights' },
-    { path: '/dealers', label: 'Directory' }
+    { path: '/churn', label: 'Risk Analysis' },
+    { path: '/insights', label: 'Market Intelligence' },
+    { path: '/copilot', label: 'AI Copilot' },
+    { path: '/reports', label: 'Reports' },
+    { path: '/settings', label: 'Settings' }
   ];
 
+
+
   return (
-    <div className="bg-background text-on-background min-h-screen relative">
+    <div className="bg-background text-on-background min-h-screen relative font-sans">
       <ShaderBackground />
       
-      {/* Immersive Header Overlay */}
-      <header className="sticky top-0 z-40 w-full bg-white/60 backdrop-blur-xl border-b border-outline-variant px-8 py-3">
-        <div className="max-w-[1440px] mx-auto flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-4 hover:opacity-90 transition-opacity">
-            <div className="w-10 h-10 relative" ref={headerCoreRef}></div>
+      {/* Immersive Premium Header */}
+      <header className="sticky top-0 z-50 w-full bg-white/70 backdrop-blur-2xl border-b border-white/40 shadow-[0_4px_30px_rgba(0,0,0,0.03)] px-6 py-3">
+        <div className="max-w-[1600px] mx-auto flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
+            <div className="w-9 h-9 relative" ref={headerCoreRef}></div>
             <div className="flex flex-col">
-              <h1 className="font-headline-md text-title-lg font-bold text-primary leading-tight">Dealer Growth</h1>
-              <p className="font-label-lg text-[10px] text-on-surface-variant uppercase tracking-widest leading-none">AI Copilot • Sundaram Finance</p>
+              <h1 className="text-[18px] font-bold text-primary leading-none tracking-tight">Startup AI</h1>
+              <p className="text-[10px] text-primary/70 uppercase tracking-widest leading-none mt-1 font-semibold">AI Platform</p>
             </div>
           </Link>
           
-          {/* Navigation Integrated into Header */}
-          <nav className="hidden md:flex items-center gap-1 bg-surface-container-low/50 p-1 rounded-xl">
+          {/* Main Navigation */}
+          <nav className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.path;
               return (
                 <Link 
                   key={link.path}
                   to={link.path}
-                  className={`px-4 py-2 rounded-lg font-label-lg text-sm transition-all ${
-                    isActive ? 'bg-primary text-on-primary' : 'text-on-surface-variant hover:bg-surface-container-high'
+                  className={`px-3 py-1.5 rounded-lg text-[13px] font-semibold transition-all duration-300 ${
+                    isActive 
+                      ? 'bg-primary text-white shadow-md shadow-primary/20' 
+                      : 'text-on-surface-variant hover:bg-surface hover:text-primary'
                   }`}
                 >
                   {link.label}
@@ -116,21 +125,72 @@ const Layout = () => {
           </nav>
           
           <div className="flex items-center gap-4">
-            <div className="relative w-64 hidden lg:block">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+            <div className="relative w-48 hidden xl:block">
+              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
               <input 
                 type="text" 
-                placeholder="Search..." 
-                className="w-full bg-white/50 border-outline-variant rounded-full py-1.5 pl-10 pr-4 text-body-md focus:ring-2 focus:ring-primary-container"
+                placeholder="Search platform..." 
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    alert(`Simulated Search for: "${e.currentTarget.value}"`);
+                    e.currentTarget.value = '';
+                  }
+                }}
+                className="w-full bg-surface/80 border border-outline-variant/30 rounded-full py-1.5 pl-9 pr-4 text-[13px] focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all placeholder:text-on-surface-variant/50"
               />
             </div>
+
             <div className="flex items-center gap-2">
-              <button className="hover:bg-surface-container rounded-full p-2 text-on-surface-variant">
-                <span className="material-symbols-outlined">notifications</span>
+              <button 
+                onClick={() => alert("You have 3 unread AI alerts! (Simulated for Prototype)")}
+                className="relative hover:bg-surface rounded-full p-1.5 text-on-surface-variant transition-colors"
+              >
+                <span className="material-symbols-outlined text-[20px]">notifications</span>
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
               </button>
-              <div className="flex items-center gap-2 pl-2 border-l border-outline-variant">
-                <div className="w-8 h-8 rounded-full bg-primary-fixed-dim flex items-center justify-center text-primary font-bold text-[12px]">RM</div>
-                <span className="hidden xl:block font-label-md text-on-surface">Regional Manager</span>
+              
+              {/* User Profile */}
+              <div className="relative pl-3 border-l border-outline-variant/30">
+                <button 
+                  onClick={() => setShowProfileMenu(!showProfileMenu)}
+                  className="flex items-center gap-2 hover:bg-surface p-1 rounded-lg transition-colors"
+                >
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-primary-container flex items-center justify-center text-white font-bold text-[11px] shadow-sm uppercase">
+                    {user?.name.substring(0, 2) || 'SF'}
+                  </div>
+                  <div className="hidden xl:flex flex-col items-start text-left">
+                    <span className="text-[12px] font-bold text-on-surface leading-none truncate max-w-[100px]">{user?.name || 'User'}</span>
+                    <span className="text-[10px] text-on-surface-variant flex items-center gap-1 mt-0.5 truncate max-w-[100px]">
+                      {user?.role || 'Guest'}
+                    </span>
+                  </div>
+                  <span className="material-symbols-outlined text-[16px] text-on-surface-variant ml-1">expand_more</span>
+                </button>
+
+                {showProfileMenu && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-outline-variant/20 py-2 z-50 animate-fade-in-up">
+                    <div className="px-4 py-2 mb-1 border-b border-outline-variant/10">
+                      <p className="text-[12px] font-bold text-on-surface truncate">{user?.name}</p>
+                      <p className="text-[10px] text-on-surface-variant truncate">{user?.email}</p>
+                    </div>
+                    <Link
+                      to="/settings"
+                      onClick={() => setShowProfileMenu(false)}
+                      className="w-full text-left px-4 py-2 text-[13px] font-medium text-on-surface hover:bg-surface transition-colors flex items-center gap-2"
+                    >
+                      <span className="material-symbols-outlined text-[16px]">person</span> Profile
+                    </Link>
+                    <button
+                      onClick={() => {
+                        logout();
+                        setShowProfileMenu(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-[13px] font-medium text-error hover:bg-error/10 transition-colors flex items-center gap-2 mt-1"
+                    >
+                      <span className="material-symbols-outlined text-[16px]">logout</span> Sign Out
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -138,30 +198,17 @@ const Layout = () => {
       </header>
 
       {/* Content Area */}
-      <main className="max-w-[1440px] mx-auto min-h-[calc(100vh-64px)] flex flex-col relative z-10 pb-32">
+      <main className="max-w-[1600px] mx-auto min-h-[calc(100vh-60px)] p-6 relative z-10 pb-32">
         <Outlet />
       </main>
 
-      {/* Subtle Floating Footer Navigation */}
-      <footer className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
-        <div className="bg-white/70 backdrop-blur-2xl border border-white/50 px-8 py-4 rounded-3xl shadow-2xl flex items-center gap-8">
-          <div className="flex items-center gap-3 pr-8 border-r border-outline-variant/30">
-            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-              <span className="material-symbols-outlined text-white text-[18px]">psychology</span>
-            </div>
-            <p className="font-label-md text-on-surface font-medium whitespace-nowrap">AI Copilot Online</p>
-          </div>
-          <div className="flex items-center gap-6">
-            <Link to="/dashboard" className="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all">home</Link>
-            <Link to="/dealers" className="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all">description</Link>
-            <Link to="/health" className="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all">query_stats</Link>
-            <button className="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all">settings</button>
-          </div>
-          <button className="w-12 h-12 bg-primary text-on-primary rounded-2xl flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all">
-            <span className="material-symbols-outlined">smart_toy</span>
-          </button>
+      {/* Floating AI Assistant Trigger */}
+      <Link to="/copilot" className="fixed bottom-8 right-8 z-50 group">
+        <div className="absolute inset-0 bg-primary rounded-full blur-xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
+        <div className="relative w-14 h-14 bg-gradient-to-br from-primary to-tertiary-container rounded-full flex items-center justify-center shadow-2xl border border-white/20 hover:scale-105 active:scale-95 transition-all">
+          <span className="material-symbols-outlined text-white text-[24px]">smart_toy</span>
         </div>
-      </footer>
+      </Link>
     </div>
   );
 };

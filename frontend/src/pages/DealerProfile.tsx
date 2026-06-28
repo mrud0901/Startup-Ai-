@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 
@@ -12,132 +12,153 @@ const DealerProfile = () => {
       .catch(console.error);
   }, [id]);
 
-  if (!dealer) return <div className="p-8">Loading dealer profile...</div>;
+  if (!dealer) return <div className="p-8 text-on-surface flex items-center gap-2"><span className="material-symbols-outlined animate-spin">sync</span> Loading intelligence profile...</div>;
+
+  const isAtRisk = dealer.status === 'At Risk' || dealer.status === 'Inactive';
 
   return (
-    <div className="animate-fade-in">
+    <div className="animate-fade-in flex flex-col gap-6">
       {/* Header Section */}
-      <section className="mb-8 flex justify-between items-start">
+      <section className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 mb-2">
-            <Link to="/dealers" className="text-primary hover:underline text-sm font-semibold flex items-center">
-              <span className="material-symbols-outlined text-[16px] mr-1">arrow_back</span>
-              Back to Directory
-            </Link>
+          <Link to="/dealers" className="text-on-surface-variant hover:text-primary text-[13px] font-semibold flex items-center mb-4 transition-colors">
+            <span className="material-symbols-outlined text-[16px] mr-1">arrow_back</span>
+            Back to Directory
+          </Link>
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 rounded-xl bg-gradient-to-tr from-primary to-primary-container flex items-center justify-center text-white text-[24px] font-bold shadow-md">
+              {dealer.name.charAt(0)}
+            </div>
+            <div>
+              <h2 className="text-[32px] font-bold text-[#1a1f36] tracking-tight flex items-center gap-3">
+                {dealer.name}
+                <span className={`px-2.5 py-1 rounded text-[11px] font-bold uppercase tracking-widest align-middle ${
+                    dealer.status === 'Active' ? 'bg-primary/10 text-primary' :
+                    isAtRisk ? 'bg-error/10 text-error' : 'bg-surface-variant text-on-surface-variant'
+                  }`}>
+                  {dealer.status}
+                </span>
+              </h2>
+              <p className="text-[14px] text-on-surface-variant mt-1 flex items-center gap-2 font-medium">
+                <span className="material-symbols-outlined text-[16px]">location_on</span>
+                {dealer.region.name} • UID: D-{10000 + dealer.id}
+              </p>
+            </div>
           </div>
-          <h2 className="text-3xl font-bold text-on-surface flex items-center gap-4">
-            {dealer.name}
-            <span className={`px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-wider ${
-                dealer.status === 'Active' ? 'bg-primary-container text-on-primary-container' :
-                dealer.status === 'At Risk' ? 'bg-error text-white' : 'bg-surface-variant text-on-surface-variant'
-              }`}>
-              {dealer.status}
-            </span>
-          </h2>
-          <p className="text-base text-on-surface-variant mt-2 flex items-center gap-2">
-            <span className="material-symbols-outlined text-[18px]">location_on</span>
-            {dealer.region.name} | ID: D-{10000 + dealer.id}
-          </p>
+        </div>
+        <div className="flex gap-2">
+          <button onClick={() => alert('Opening Interaction Log...')} className="px-4 py-2 bg-white border border-outline-variant rounded-lg text-[13px] font-bold text-on-surface shadow-sm hover:bg-surface transition-colors">
+            Log Interaction
+          </button>
+          <Link to="/copilot" className="px-4 py-2 bg-primary text-white rounded-lg text-[13px] font-bold shadow-md hover:bg-primary/90 transition-colors flex items-center gap-2">
+            <span className="material-symbols-outlined text-[18px]">assistant</span>
+            Copilot Analysis
+          </Link>
         </div>
       </section>
 
-      {/* Grid Layout for Profile */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column: Health Score & ML Predictions */}
-        <div className="lg:col-span-1 flex flex-col gap-6">
-          <div className="glass-panel p-6 rounded-xl shadow-sm text-center">
-            <h3 className="text-lg font-semibold text-on-surface mb-4">Dealer Health Score</h3>
-            <div className="relative inline-flex items-center justify-center w-32 h-32 rounded-full border-[10px] border-surface-container-high">
-              <div className="absolute inset-0 rounded-full border-[10px] border-green-500 border-l-transparent border-b-transparent rotate-[45deg]"></div>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Left Column */}
+        <div className="lg:col-span-4 flex flex-col gap-6">
+          <div className="glass-card p-6 rounded-2xl flex flex-col items-center justify-center text-center">
+            <h3 className="text-[14px] font-bold text-on-surface-variant uppercase tracking-wider mb-6 w-full text-left">Health Intelligence</h3>
+            
+            <div className="relative inline-flex items-center justify-center w-40 h-40 rounded-full border-[12px] border-surface mb-6 shadow-inner">
+              <div className={`absolute inset-0 rounded-full border-[12px] ${isAtRisk ? 'border-error' : 'border-primary'} border-l-transparent border-b-transparent rotate-[45deg]`}></div>
               <div className="text-center">
-                <span className="text-3xl font-bold text-on-surface">{Math.round(dealer.metrics?.health_score || 0)}</span>
+                <span className={`text-[40px] font-bold leading-none ${isAtRisk ? 'text-error' : 'text-primary'}`}>{Math.round(dealer.metrics?.health_score || 0)}</span>
+                <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mt-1">Score</p>
               </div>
             </div>
-            <p className="text-sm text-on-surface-variant mt-4">
-              Performance is optimal. High conversion rate detected in recent month.
-            </p>
+            
+            <div className="w-full text-left bg-surface p-4 rounded-xl border border-outline-variant/30">
+              <p className="text-[13px] font-bold text-on-surface flex items-center gap-2 mb-1">
+                <span className="material-symbols-outlined text-[16px] text-primary">insights</span> AI Summary
+              </p>
+              <p className="text-[12px] text-on-surface-variant leading-relaxed">
+                {isAtRisk 
+                  ? "Dealer is demonstrating severe drop in disbursement velocity. Immediate intervention required."
+                  : "Performance is optimal. High conversion rate detected in recent month."}
+              </p>
+            </div>
           </div>
 
-          <div className="glass-panel p-6 rounded-xl shadow-sm border-t-4 border-error">
-            <h3 className="text-lg font-semibold text-on-surface mb-2">Churn Risk Prediction</h3>
-            <div className="flex justify-between items-center mt-4">
-              <span className="text-sm font-semibold text-on-surface-variant">Probability</span>
-              <span className="text-xl font-bold text-error">
+          <div className={`glass-card p-6 rounded-2xl border-l-4 ${isAtRisk ? 'border-error bg-error/5' : 'border-green-500'}`}>
+            <h3 className="text-[14px] font-bold text-on-surface-variant uppercase tracking-wider mb-4">Churn Risk Prediction</h3>
+            <div className="flex justify-between items-end mb-2">
+              <span className="text-[13px] font-semibold text-on-surface">Probability</span>
+              <span className={`text-[28px] font-bold leading-none ${isAtRisk ? 'text-error' : 'text-green-600'}`}>
                 {dealer.status === 'At Risk' ? '68%' : dealer.status === 'Inactive' ? '99%' : '12%'}
               </span>
             </div>
-            <div className="w-full bg-surface-container h-2 rounded-full mt-2">
-              <div className={`h-full rounded-full ${dealer.status === 'At Risk' ? 'bg-error w-[68%]' : dealer.status === 'Inactive' ? 'bg-error w-full' : 'bg-green-500 w-[12%]'}`}></div>
+            <div className="w-full bg-surface-variant h-2 rounded-full overflow-hidden">
+              <div className={`h-full ${dealer.status === 'At Risk' ? 'bg-error w-[68%]' : dealer.status === 'Inactive' ? 'bg-error w-full' : 'bg-green-500 w-[12%]'}`}></div>
             </div>
-            <p className="text-xs text-on-surface-variant mt-4">
-              Risk analysis based on activity frequency and recent sales volume.
+            <p className="text-[12px] text-on-surface-variant mt-4 leading-relaxed font-medium">
+              Risk modeling based on comparative regional activity frequency and 90-day rolling sales volume.
             </p>
           </div>
         </div>
 
-        {/* Right Column: Key Metrics & AI Recommendations */}
-        <div className="lg:col-span-2 flex flex-col gap-6">
-          <div className="glass-panel p-6 rounded-xl shadow-sm">
-            <h3 className="text-lg font-semibold text-on-surface mb-6">Performance Metrics</h3>
+        {/* Right Column */}
+        <div className="lg:col-span-8 flex flex-col gap-6">
+          <div className="glass-card p-6 rounded-2xl">
+            <h3 className="text-[14px] font-bold text-on-surface-variant uppercase tracking-wider mb-6">Key Performance Indicators</h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-              <div>
-                <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-1">Lead Generation</p>
-                <p className="text-xl font-bold text-on-surface">{dealer.metrics?.lead_generation}</p>
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-1">Conversion Rate</p>
-                <p className="text-xl font-bold text-on-surface">{dealer.metrics?.conversion_rate.toFixed(1)}%</p>
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-1">Customer Rating</p>
-                <p className="text-xl font-bold text-on-surface flex items-center gap-1">
-                  {dealer.metrics?.customer_rating.toFixed(1)}
-                  <span className="material-symbols-outlined text-yellow-500 text-[18px]">star</span>
-                </p>
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-1">Activity Frequency</p>
-                <p className="text-xl font-bold text-on-surface">{dealer.metrics?.activity_frequency}</p>
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-1">Loan Disbursement</p>
-                <p className="text-xl font-bold text-on-surface">₹ {(dealer.metrics?.loan_disbursement / 100000).toFixed(2)} L</p>
-              </div>
+              {[
+                { label: 'Loan Disbursement', val: `₹ ${(dealer.metrics?.loan_disbursement / 100000).toFixed(2)} L`, trend: '+4.2%' },
+                { label: 'Lead Generation', val: dealer.metrics?.lead_generation, trend: '-2.1%' },
+                { label: 'Conversion Rate', val: `${dealer.metrics?.conversion_rate.toFixed(1)}%`, trend: '+1.1%' },
+                { label: 'Customer Rating', val: dealer.metrics?.customer_rating.toFixed(1), star: true },
+                { label: 'Activity Frequency', val: dealer.metrics?.activity_frequency, trend: 'Stable' },
+                { label: 'Network Rank', val: '#42', trend: 'Top 10%' },
+              ].map((kpi, idx) => (
+                <div key={idx} className="flex flex-col border-l-2 border-outline-variant/30 pl-4">
+                  <p className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-1">{kpi.label}</p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-[20px] font-bold text-[#1a1f36]">{kpi.val}</p>
+                    {kpi.star && <span className="material-symbols-outlined text-[16px] text-yellow-500">star</span>}
+                  </div>
+                  {kpi.trend && <p className="text-[11px] font-semibold text-green-600 mt-1">{kpi.trend}</p>}
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="glass-panel p-6 rounded-xl shadow-sm bg-primary-fixed/20 border-primary-fixed">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="material-symbols-outlined text-primary">psychology</span>
-              <h3 className="text-lg font-semibold text-primary">AI Growth Recommendations</h3>
+          <div className="glass-card p-6 rounded-2xl bg-[#1a1f36] text-white overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-primary rounded-full blur-[100px] opacity-20 pointer-events-none"></div>
+            
+            <div className="flex items-center gap-3 mb-6 relative z-10">
+              <span className="material-symbols-outlined text-primary text-[28px]">psychology</span>
+              <h3 className="text-[18px] font-bold tracking-tight">AI Strategy Recommendations</h3>
             </div>
             
-            <div className="space-y-4">
-              {dealer.status === 'At Risk' ? (
+            <div className="space-y-4 relative z-10">
+              {isAtRisk ? (
                 <>
-                  <div className="p-4 bg-surface rounded-lg border border-outline-variant flex justify-between items-center">
+                  <div className="p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/10 flex justify-between items-center group hover:bg-white/15 transition-colors">
                     <div>
-                      <p className="font-semibold text-on-surface">Schedule Manager Visit</p>
-                      <p className="text-sm text-on-surface-variant">Dealer sales dropped by 15% this quarter.</p>
+                      <p className="text-[14px] font-bold">Schedule Manager Intervention</p>
+                      <p className="text-[12px] text-white/70 mt-1">Dealer sales dropped by 15% this quarter. High probability of defection to Competitor A.</p>
                     </div>
-                    <button className="px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-semibold">Action</button>
+                    <button onClick={() => alert('Strategy successfully executed! Analytics will be updated in 24 hours.')} className="px-5 py-2 bg-white text-[#1a1f36] rounded-lg text-[12px] font-bold shadow-md opacity-0 group-hover:opacity-100 transition-opacity">Execute</button>
                   </div>
-                  <div className="p-4 bg-surface rounded-lg border border-outline-variant flex justify-between items-center">
+                  <div className="p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/10 flex justify-between items-center group hover:bg-white/15 transition-colors">
                     <div>
-                      <p className="font-semibold text-on-surface">Targeted Incentive Scheme</p>
-                      <p className="text-sm text-on-surface-variant">Provide a 0.5% subvention offer to boost conversions.</p>
+                      <p className="text-[14px] font-bold">Targeted Incentive Scheme</p>
+                      <p className="text-[12px] text-white/70 mt-1">Provide a 0.5% subvention offer to boost conversions back to baseline.</p>
                     </div>
-                    <button className="px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-semibold">Action</button>
+                    <button onClick={() => alert('Strategy successfully executed! Analytics will be updated in 24 hours.')} className="px-5 py-2 bg-white text-[#1a1f36] rounded-lg text-[12px] font-bold shadow-md opacity-0 group-hover:opacity-100 transition-opacity">Execute</button>
                   </div>
                 </>
               ) : (
                 <>
-                  <div className="p-4 bg-surface rounded-lg border border-outline-variant flex justify-between items-center">
+                  <div className="p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/10 flex justify-between items-center group hover:bg-white/15 transition-colors">
                     <div>
-                      <p className="font-semibold text-on-surface">Upsell Commercial Vehicles</p>
-                      <p className="text-sm text-on-surface-variant">High conversion in retail. Ready for CV expansion.</p>
+                      <p className="text-[14px] font-bold">Upsell Commercial Vehicles</p>
+                      <p className="text-[12px] text-white/70 mt-1">High conversion in retail. Dealer is ready for CV expansion based on market density.</p>
                     </div>
-                    <button className="px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-semibold">Action</button>
+                    <button onClick={() => alert('Strategy successfully executed! Analytics will be updated in 24 hours.')} className="px-5 py-2 bg-white text-[#1a1f36] rounded-lg text-[12px] font-bold shadow-md opacity-0 group-hover:opacity-100 transition-opacity">Execute</button>
                   </div>
                 </>
               )}

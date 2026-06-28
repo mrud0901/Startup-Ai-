@@ -11,22 +11,30 @@ def seed_db():
     db = SessionLocal()
     
     # Create Regions
-    regions = ["Northwest", "Southwest", "Northeast", "Southeast", "Midwest"]
+    regions = ["North India", "South India", "East India", "West India", "Central India"]
     region_objs = []
     for r in regions:
-        region = Region(name=r, manager_name=f"{r} Manager")
+        region = Region(name=r, manager_name=f"{r} Regional Head")
         db.add(region)
         region_objs.append(region)
     db.commit()
     
-    # Create Dealers
+    # Realistic Indian Dealer Names
+    prefixes = ["Sri", "Balaji", "Sai", "Lakshmi", "Tirupati", "Krishna", "Om", "Ganesh", "Royal", "Apex"]
+    names = ["Motors", "Auto Finance", "Tractors", "Automobiles", "Wheels", "Vehicles", "Auto Hub"]
+    cities = ["Chennai", "Bangalore", "Hyderabad", "Mumbai", "Delhi", "Pune", "Kolkata", "Ahmedabad", "Surat", "Jaipur", "Lucknow", "Coimbatore"]
+    
     print("Creating 500 dealers...")
     status_choices = ["Active"] * 85 + ["Inactive"] * 10 + ["At Risk"] * 5
     for i in range(1, 501):
         region = random.choice(region_objs)
         status = random.choice(status_choices)
+        
+        # Construct realistic name
+        dealer_name = f"{random.choice(prefixes)} {random.choice(cities)} {random.choice(names)}"
+        
         dealer = Dealer(
-            name=f"Automotive Dealership {i}",
+            name=dealer_name,
             status=status,
             region_id=region.id,
             joined_date=datetime.utcnow() - timedelta(days=random.randint(100, 1000))
@@ -35,26 +43,27 @@ def seed_db():
         db.commit()
         db.refresh(dealer)
         
-        # Add Metrics
+        # Add Metrics (in Crores/Lakhs)
+        # Loan disbursement 0.5 crores to 25 crores
         metrics = DealerMetrics(
             dealer_id=dealer.id,
-            health_score=random.uniform(50.0, 99.0) if status == "Active" else random.uniform(20.0, 50.0),
-            lead_generation=random.randint(50, 500),
-            conversion_rate=random.uniform(5.0, 25.0),
-            customer_rating=random.uniform(3.0, 5.0),
-            activity_frequency=random.choice(["Low", "Medium", "High"]),
-            loan_disbursement=random.uniform(100000, 5000000)
+            health_score=random.uniform(70.0, 99.0) if status == "Active" else random.uniform(20.0, 60.0),
+            lead_generation=random.randint(100, 1000),
+            conversion_rate=random.uniform(8.0, 35.0),
+            customer_rating=random.uniform(3.5, 4.9),
+            activity_frequency=random.choice(["Low", "Medium", "High", "Very High"]),
+            loan_disbursement=random.uniform(0.5, 25.0) # In Crores
         )
         db.add(metrics)
         
-        # Add Sales History
+        # Add Sales History (in Crores)
         months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         for month in months:
             sales = SalesHistory(
                 dealer_id=dealer.id,
                 month=month,
                 year=2025,
-                sales_volume=random.uniform(10000, 150000)
+                sales_volume=random.uniform(0.1, 5.0) # 10 lakhs to 5 crores per month
             )
             db.add(sales)
             

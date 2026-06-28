@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, Query, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from typing import List, Optional
 from app.database.database import get_db
 from app.models.models import Dealer, DealerMetrics, Region, SalesHistory, Prediction, Recommendation
@@ -16,7 +16,7 @@ def get_dealers(
     search: Optional[str] = None,
     db: Session = Depends(get_db)
 ):
-    query = db.query(Dealer)
+    query = db.query(Dealer).options(joinedload(Dealer.region), joinedload(Dealer.metrics))
     
     if region_id:
         query = query.filter(Dealer.region_id == region_id)
@@ -30,7 +30,13 @@ def get_dealers(
 
 @router.get("/dealers/{dealer_id}", response_model=DealerProfile)
 def get_dealer(dealer_id: int, db: Session = Depends(get_db)):
-    dealer = db.query(Dealer).filter(Dealer.id == dealer_id).first()
+    dealer = db.query(Dealer).options(
+        joinedload(Dealer.region),
+        joinedload(Dealer.metrics),
+        joinedload(Dealer.sales_history),
+        joinedload(Dealer.predictions),
+        joinedload(Dealer.recommendations)
+    ).filter(Dealer.id == dealer_id).first()
     if not dealer:
         raise HTTPException(status_code=404, detail="Dealer not found")
         
