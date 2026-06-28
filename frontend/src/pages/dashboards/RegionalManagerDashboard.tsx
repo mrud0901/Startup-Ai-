@@ -7,8 +7,8 @@ import AICore from '../../components/AICore';const RegionalManagerDashboard = ()
   const [topDealers, setTopDealers] = useState<any[]>([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/dashboard').then(res => setMetrics(res.data)).catch(console.error);
-    axios.get('http://localhost:8000/api/dealers?limit=4').then(res => setTopDealers(res.data)).catch(console.error);
+    axios.get('/api/dashboard').then(res => setMetrics(res.data)).catch(console.error);
+    axios.get('/api/dealers?limit=4').then(res => setTopDealers(res.data)).catch(console.error);
   }, []);
 
   const activityData = [

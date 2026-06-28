@@ -7,7 +7,7 @@ const DealerProfile = () => {
   const [dealer, setDealer] = useState<any>(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/dealers/${id}`)
+    axios.get(`/api/dealers/${id}`)
       .then(res => setDealer(res.data))
       .catch(console.error);
   }, [id]);

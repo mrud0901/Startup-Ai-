@@ -8,7 +8,7 @@ const DealerDirectory = () => {
   const [status, setStatus] = useState('');
 
   const fetchDealers = () => {
-    let url = 'http://localhost:8000/api/dealers?limit=100';
+    let url = '/api/dealers?limit=100';
     if (search) url += `&search=${search}`;
     if (status) url += `&status=${status}`;
     
