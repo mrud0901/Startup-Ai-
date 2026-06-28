@@ -1,7 +1,7 @@
-import { useState } from 'react';
+
 
 const Reports = () => {
-  const [selectedReport, setSelectedReport] = useState<number | null>(null);
+
 
   const reports = [
     { id: 1, name: 'Q3 Regional Performance Review', date: 'Oct 15, 2026', type: 'Executive Summary', status: 'Ready' },
